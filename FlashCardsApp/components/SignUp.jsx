@@ -59,7 +59,9 @@ const SignUpForm = ({ navigation }) => {
         />
       </View>
 
-      <Button title="Sign Up" onPress={handleSignUp} style={styles.signUpButton} />
+      <Button title="Sign Up" onPress={() => {navigation.navigate('PostFlashCard')}} style={styles.signUpButton} />
+      <Text>Login if already registered</Text>
+  
       <TouchableOpacity onPress={navigateToLogin}>
         <Text style={styles.loginText}>Login if already registered</Text>
       </TouchableOpacity>

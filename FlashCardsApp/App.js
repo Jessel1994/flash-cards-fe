@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 import SignUpForm from './components/SignUp';
+import PostFlashCard from './components/PostFlashCard';
 import Login from './components/Login';
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="SignUp" component={SignUpForm} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="PostFlashCard" component={PostFlashCard} />
       </Stack.Navigator>
     </NavigationContainer>
     
@@ -25,8 +27,13 @@ export default function App() {
 function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
+      <Text>Sign Up</Text>
+      <SignUpForm />
+    
       <Text>Welcome to the Flash Cards App!</Text>
+      
       <Text>Here you can make yourself flashcards and revise!</Text>
+      
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.7}
