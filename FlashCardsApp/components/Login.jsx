@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
-
-const Login= () => {
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSignUp = () => {
-    
+  const handleLogIn = () => {
+    // Implement your login logic here
+  };
+
+  const navigateToSignUp = () => {
+    // Use navigation to navigate to the "SignUp" page
+    navigation.navigate('SignUp');
   };
 
   return (
     <View style={styles.container}>
-        <View style={styles.inputContainer}>
+      <View style={styles.inputContainer}>
         <Text>Email</Text>
         <TextInput
           style={styles.input}
@@ -23,7 +25,6 @@ const Login= () => {
           onChangeText={setEmail}
         />
       </View>
-     
 
       <View style={styles.inputContainer}>
         <Text>Password</Text>
@@ -36,10 +37,10 @@ const Login= () => {
         />
       </View>
 
-      
-
-      <Button title="Sign Up" onPress={handleSignUp} style={styles.signUpButton} />
-      <Text>Login if already registered</Text>
+      <Button title="Log In" onPress={handleLogIn} style={styles.signUpButton} />
+      <TouchableOpacity onPress={navigateToSignUp}>
+        <Text style={styles.signupText}>Haven't got an account yet? Sign Up here.</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -65,7 +66,12 @@ const styles = StyleSheet.create({
   signUpButton: {
     borderRadius: 100,
     backgroundColor: 'green',
-    color: 'green'
+    color: 'green',
+  },
+  signupText: {
+    textDecorationLine: 'underline',
+    color: 'blue',
+    marginTop: 8,
   },
 });
 
