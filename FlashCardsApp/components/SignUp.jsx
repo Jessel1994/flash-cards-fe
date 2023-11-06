@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
 
-const SignUpForm = ({ navigation }) => {
+
+const SignUpForm = () => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
   const handleSignUp = () => {
-    // Implement your sign-up logic here
-  };
-
-  const navigateToLogin = () => {
-    // Use navigation to navigate to the "Login" page
-    navigation.navigate('Login');
+    
   };
 
   return (
@@ -60,9 +56,7 @@ const SignUpForm = ({ navigation }) => {
       </View>
 
       <Button title="Sign Up" onPress={handleSignUp} style={styles.signUpButton} />
-      <TouchableOpacity onPress={navigateToLogin}>
-        <Text style={styles.loginText}>Login if already registered</Text>
-      </TouchableOpacity>
+      <Text>Login if already registered</Text>
     </View>
   );
 };
@@ -88,12 +82,7 @@ const styles = StyleSheet.create({
   signUpButton: {
     borderRadius: 100,
     backgroundColor: 'green',
-    color: 'green',
-  },
-  loginText: {
-    textDecorationLine: 'underline',
-    color: 'blue',
-    marginTop: 8,
+    color: 'green'
   },
 });
 
