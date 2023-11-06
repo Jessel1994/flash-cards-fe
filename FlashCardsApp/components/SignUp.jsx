@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
+
 
 const SignUpForm = () => {
   const [name, setName] = useState('');
@@ -8,7 +9,7 @@ const SignUpForm = () => {
   const [email, setEmail] = useState('');
 
   const handleSignUp = () => {
-    // Implement your sign-up logic here (e.g., API calls, validation, etc.).
+    
   };
 
   return (
@@ -55,6 +56,7 @@ const SignUpForm = () => {
       </View>
 
       <Button title="Sign Up" onPress={handleSignUp} style={styles.signUpButton} />
+      <Text>Login if already registered</Text>
     </View>
   );
 };
@@ -79,7 +81,8 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     borderRadius: 100,
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'green',
+    color: 'green'
   },
 });
 
