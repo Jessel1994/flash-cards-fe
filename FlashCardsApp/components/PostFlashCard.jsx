@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from "react-native";
-
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 const PostFlashCard = () => {
  
   const [questionBody, setQuestionBody] = useState("");
@@ -44,10 +44,14 @@ const PostFlashCard = () => {
         />
       </View>
 
-      <Button onPress={handleSaveCard} title="Save card" style={styles.saveButton}></Button>
+      <Button onPress={handleSaveCard} color="#007AFF" title="Save card" style={styles.saveButton}></Button>
 
       <Button onPress={handleDeleteCard} title="Delete card" style={styles.delButton}></Button>
+      <View>
+      <FontAwesomeIcon icon="fa-solid fa-house" />
     </View>
+    </View>
+    
   );
 };
 

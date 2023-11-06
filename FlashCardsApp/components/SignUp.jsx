@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity} from 'react-native';
 
 
-const SignUpForm = () => {
+const SignUpForm = ({navigation}) => {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -55,7 +55,7 @@ const SignUpForm = () => {
         />
       </View>
 
-      <Button title="Sign Up" onPress={handleSignUp} style={styles.signUpButton} />
+      <Button title="Sign Up" onPress={() => {navigation.navigate('PostFlashCard')}} style={styles.signUpButton} />
       <Text>Login if already registered</Text>
     </View>
   );

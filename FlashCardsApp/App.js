@@ -33,7 +33,7 @@ function HomeScreen({ navigation }) {
       <Text>Welcome to the Flash Cards App!</Text>
       
       <Text>Here you can make yourself flashcards and revise!</Text>
-      <PostFlashCard />
+      
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.7}
