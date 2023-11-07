@@ -15,7 +15,7 @@ export const CreateCardScreen = ({ navigation, route }) => {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
     <Button
       title="Create card"
-      onPress={() => navigation.navigate('PostFlashCard')}
+      onPress={() => navigation.navigate('Add Card')}
     />
     <Text style={{ margin: 10 }}>Card: {route.params?.post}</Text>
   </View>

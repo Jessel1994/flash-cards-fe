@@ -23,8 +23,7 @@ export default function App() {
 function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>Sign Up</Text>
-      <SignUpForm />
+      
     
       <Text>Welcome to the Flash Cards App!</Text>
       
@@ -72,6 +71,8 @@ function MyStack() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUpForm} />
       <Stack.Screen name="Card" component={Card} />
+      <Stack.Screen name="Create Card" component={CreateCardScreen} />
+      <Stack.Screen name="Add Card" component={PostFlashCard} />
     </Stack.Navigator>
   );
 }
