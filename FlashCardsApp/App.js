@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Stack = createStackNavigator();
 
 import SignUpForm from './components/SignUp';
+import {CreateCardScreen, PostFlashCard} from './components/PostFlashCard';
 import Login from './components/Login';
 import Card from './components/FlipCard';
 
@@ -22,8 +23,13 @@ export default function App() {
 function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
+      <Text>Sign Up</Text>
+      <SignUpForm />
+    
       <Text>Welcome to the Flash Cards App!</Text>
+      
       <Text>Here you can make yourself flashcards and revise!</Text>
+      
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.7}
