@@ -39,7 +39,7 @@ const Login = ({ navigation }) => {
 
       <Button title="Log In" onPress={handleLogIn} style={styles.signUpButton} />
       <TouchableOpacity onPress={navigateToSignUp}>
-        <Text style={styles.signupText}>Login if already registered</Text>
+        <Text style={styles.signupText}>Haven't got an account? Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
