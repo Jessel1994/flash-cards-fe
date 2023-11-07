@@ -59,7 +59,7 @@ const SignUpForm = ({ navigation }) => {
         />
       </View>
 
-      <Button title="Sign Up" onPress={() => {navigation.navigate('PostFlashCard')}} style={styles.signUpButton} />
+      <Button title="Sign Up" onPress={() => {navigation.navigate('CreateCardScreen')}} style={styles.signUpButton} />
       <Text>Login if already registered</Text>
   
       <TouchableOpacity onPress={navigateToLogin}>
