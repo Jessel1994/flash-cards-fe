@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 import SignUpForm from './components/SignUp';
-import PostFlashCard from './components/PostFlashCard';
+import {CreateCardScreen, PostFlashCard} from './components/PostFlashCard';
 import Login from './components/Login';
 
 export default function App() {
@@ -17,6 +17,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="SignUp" component={SignUpForm} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="CreateCardScreen" component={CreateCardScreen} />
         <Stack.Screen name="PostFlashCard" component={PostFlashCard} />
       </Stack.Navigator>
     </NavigationContainer>
