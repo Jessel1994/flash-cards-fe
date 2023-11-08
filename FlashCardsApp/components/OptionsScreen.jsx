@@ -1,10 +1,9 @@
 import React, { useState, useEffect} from "react";
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from "react-native";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+ 
 
-
-
-export const CreateCardScreen = ({ navigation, route }) => {
+export const OptionsScreen = ({ navigation, route }) => {
   useEffect (() => {
     if (route.params?.post) {
       // Post updated, do something with `route.params.post`
@@ -12,15 +11,28 @@ export const CreateCardScreen = ({ navigation, route }) => {
     }
   }, [route.params?.post]);
 
+  const navigateToAllCards = () => {
+    // Use navigation to navigate to the "Login" page
+    navigation.navigate('View Cards');
+  };
+
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
     <Button
-      title="Create card"
+      title="Create Card"
       onPress={() => navigation.navigate('Add Card')}
       accessibilityLabel="Press to start creating your flash card"
-      style={styles.saveButton}
+      style={styles.createCardBtn}
     />
-    <Text style={{ margin: 10 }}>Card: {route.params?.post}</Text>
+    {/* <Text style={{ margin: 10 }}>Card: {route.params?.post}</Text> */}
+
+    <Button
+        title="View Cards"
+        onPress={navigateToAllCards}
+        accessibilityLabel="Press to view your flash cards"
+        style={styles.viewButton}
+      />
   </View>
 
      )
@@ -34,25 +46,15 @@ export const CreateCardScreen = ({ navigation, route }) => {
           alignItems: "center",
           gap: 12,
         },
-        inputContainer: {
-          width: "100%",
-        },
-        input: {
-          width: "100%",
-          height: 60,
-          borderWidth: 1,
-          borderColor: "gray",
-          borderRadius: "10px",
-          paddingHorizontal: 10,
-        },
-        saveButton: {
+              
+        createCardBtn: {
           borderRadius: 10,
           backgroundColor: "lightgreen",
         
         },
-        delButton: {
+        viewButton: {
           borderRadius: 10,
-          backgroundColor: "red",
-        },
+          backgroundColor: "lightgreen",
+        }
       });
       
