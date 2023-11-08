@@ -1,38 +1,55 @@
 import React, { useState, useEffect} from "react";
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { postCard } from "../api";
+import {CreateCardScreen} from "./CreateCardScreen";
 
-
-export const CreateCardScreen = ({ navigation, route }) => {
-  useEffect (() => {
-    if (route.params?.post) {
-      // Post updated, do something with `route.params.post`
-      // For example, send the post to the server
-    }
-  }, [route.params?.post]);
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Button
-      title="Create card"
-      onPress={() => navigation.navigate('Add Card')}
-    />
-    <Text style={{ margin: 10 }}>Card: {route.params?.post}</Text>
-  </View>
-
-  )
-    }
-
+    
 
 export const PostFlashCard = ({ navigation, route }) => {
- 
+
+ const [postedCard, setPostedCard] = useState('') // post card to BE
+ const [isSubmitting, setIsSubmitting] = useState(false);
+ const [error, setError] = useState({});
+
+
   const [questionBody, setQuestionBody] = useState("");
   const [answerBody, setAnswerBody] = useState("");
   const [topicBody, setTopicBody] = useState("");
-  const [deckName, setDeckName] = useState("");
+  // const [deckName, setDeckName] = useState("");
 
-  const handleSaveCard = () => {};
+  const handleSubmit = () => {
+    const newCard = {
+      question: questionBody,
+      answer: answerBody,
+      topic: topicBody
+    }
+    if(questionBody.trim() !=='' || answerBody.trim() !=='' || topicBody.trim() !==''){
+    setIsSubmitting(true); // Start submitting
+    postCard(newCard)
+    .then((card) => {
+        setPostedCard(card);
+        setQuestionBody('');
+        setAnswerBody('');
+        setTopicBody('');
+        setIsSubmitting(false);
+        // Navigate back to the previous screen (CreateCardScreen)
+        navigation.goBack();
+    })
+
+    .catch ((error) =>{
+      console.log("ERROR: ", error)
+      setError(error);
+    })
+  }
+    
+
+    
+  };
   const handleDeleteCard = () => {};
+
+
+
 
   return (
     // styles to add later
@@ -70,26 +87,16 @@ export const PostFlashCard = ({ navigation, route }) => {
         />
       </View>
 
-      <View style={styles.inputContainer}>
-        <Text>Deck</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Deck Here"
-          value={deckName}
-          onChangeText={setDeckName}
-        />
-      </View>
+      <Button 
+       disabled={questionBody.trim() ==='' || answerBody.trim() ==='' || topicBody.trim() ===''}
+        
+      title={isSubmitting ? 'The card is submitted' : 'Save card'}
+      onPress={handleSubmit} 
+      style={styles.saveButton}
+      accessibilityLabel="Press to save your flashcard"
+  
+      ></Button>
 
-      <Button title="Save card"
-      onPress={() => {
-
-      handleSaveCard();
-      navigation.navigate({
-            name: 'CreateCardScreen',
-            params: { post: questionBody},
-            merge: true,
-      });
-       }} style={styles.saveButton}></Button>
 
       <Button onPress={handleDeleteCard} title="Delete card" style={styles.delButton}></Button>
       <View>
@@ -130,4 +137,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// export default PostFlashCard;
+ 

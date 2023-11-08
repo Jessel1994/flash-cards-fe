@@ -8,7 +8,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Stack = createStackNavigator();
 
 import SignUpForm from './components/SignUp';
-import {CreateCardScreen, PostFlashCard} from './components/PostFlashCard';
+import {PostFlashCard} from './components/PostFlashCard';
+
+import {CreateCardScreen} from './components/CreateCardScreen';
 import Login from './components/Login';
 import Card from './components/FlipCard';
 
