@@ -12,7 +12,6 @@ export const OptionsScreen = ({ navigation, route }) => {
   }, [route.params?.post]);
 
   const navigateToAllCards = () => {
-    // Use navigation to navigate to the "Login" page
     navigation.navigate('View Cards');
   };
 
@@ -34,7 +33,6 @@ export const OptionsScreen = ({ navigation, route }) => {
         style={styles.viewButton}
       />
   </View>
-
      )
   }
 
