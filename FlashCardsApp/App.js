@@ -8,9 +8,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Stack = createStackNavigator();
 
 import SignUpForm from './components/SignUp';
-import {CreateCardScreen, PostFlashCard} from './components/PostFlashCard';
+import {PostFlashCard} from './components/PostFlashCard';
+import { OptionsScreen } from './components/OptionsScreen';
+import {ViewCards} from './components/ViewCards';
 import Login from './components/Login';
 import Card from './components/FlipCard';
+
 
 export default function App() {
   return (
@@ -71,7 +74,8 @@ function MyStack() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUpForm} />
       <Stack.Screen name="Card" component={Card} />
-      <Stack.Screen name="Create Card" component={CreateCardScreen} />
+      <Stack.Screen name="Create Card" component={OptionsScreen} />
+      <Stack.Screen name="View Cards" component={ViewCards} />
       <Stack.Screen name="Add Card" component={PostFlashCard} />
     </Stack.Navigator>
   );
