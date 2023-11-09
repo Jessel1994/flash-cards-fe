@@ -11,6 +11,7 @@ export const getCards = async () => {
 }
 
 export const getSingleCard = async (card_id) => {
+    console.log("card_id from api", card_id)
     const response = await flashCardsApi.get(`/cards/${card_id}`);
     // console.log("from api single card ", response)
     return response.data;

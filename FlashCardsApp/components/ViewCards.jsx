@@ -38,17 +38,14 @@ export const ViewCards = ({navigation}) => {
     );
   }
 
-  const navigateToCard = (card_id) => {
-    navigation.navigate('Card', { card_id });
-  }
-
   return (
     <View style={styles.cardsAllContainer}>
     <ScrollView>
       {cards.map((card) => (
-            <View style={styles.cardListItem} key={card.card_id}>
+     
+            <View style={styles.cardListItem} key={card._id}>
           
-            <TouchableOpacity key={card.card_id} onPress={() => navigateToCard(card.card_id)}>
+            <TouchableOpacity key={card._id} onPress={()=>{navigation.navigate('Card', {card_id: card._id})}}>
           <Text>{card.question}</Text>
           </TouchableOpacity>
         </View>       
