@@ -80,7 +80,7 @@ function MyStack() {
 function MyTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={MyStack} options={{ headerShown: false }} />
+      <Tab.Screen name="Main" component={MyStack} options={{ headerShown: false }} />
       <Tab.Screen name="Card" component={Card} />
     </Tab.Navigator>
   );
