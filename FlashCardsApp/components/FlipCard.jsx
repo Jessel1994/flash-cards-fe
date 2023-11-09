@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { getSingleCard } from '../api';
 
-const Card = ( ) => {
+const Card = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   // const card_id = "654b726c2f203df63a9f608f";
 
