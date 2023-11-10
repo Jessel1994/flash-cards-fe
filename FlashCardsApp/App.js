@@ -9,12 +9,12 @@ import { UserContext, UserProvider } from './contexts/Theme';
 const Stack = createStackNavigator();
 
 import SignUpForm from './components/SignUp';
-import {PostFlashCard} from './components/PostFlashCard';
+import { PostFlashCard } from './components/PostFlashCard';
 import { OptionsScreen } from './components/OptionsScreen';
-import {ViewCards} from './components/ViewCards';
+import { ViewCards } from './components/ViewCards';
 import Login from './components/Login';
 import Card from './components/FlipCard';
-
+import Topics from './Pages/Topics';
 
 export default function App() {
   
@@ -32,19 +32,16 @@ function HomeScreen({ navigation }) {
   
   return (
     <View style={styles.container}>
-      
-    
       <Text>Welcome to the Flash Cards App!</Text>
-      
+
       <Text>Here you can make yourself flashcards and revise!</Text>
-      
+
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.7}
         onPress={() => {
           navigation.navigate('SignUp');
-        }}
-      >
+        }}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -52,8 +49,7 @@ function HomeScreen({ navigation }) {
         activeOpacity={0.7}
         onPress={() => {
           navigation.navigate('Login');
-        }}
-      >
+        }}>
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
 
@@ -62,11 +58,10 @@ function HomeScreen({ navigation }) {
         activeOpacity={0.7}
         onPress={() => {
           navigation.navigate('Card');
-        }}
-      >
+        }}>
         <Text style={styles.buttonText}>Card</Text>
       </TouchableOpacity>
-      <StatusBar style="auto" />
+      <StatusBar style='auto' />
     </View>
   );
 }
@@ -76,13 +71,13 @@ const Tab = createBottomTabNavigator();
 function MyStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="SignUp" component={SignUpForm} />
-      <Stack.Screen name="Card" component={Card} />
-      <Stack.Screen name="Create Card" component={OptionsScreen} />
-      <Stack.Screen name="View Cards" component={ViewCards} />
-      <Stack.Screen name="Add Card" component={PostFlashCard} />
+      <Stack.Screen name='Home' component={HomeScreen} />
+      <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen name='SignUp' component={SignUpForm} />
+      <Stack.Screen name='Card' component={Card} />
+      <Stack.Screen name='Create Card' component={OptionsScreen} />
+      <Stack.Screen name='View Cards' component={ViewCards} />
+      <Stack.Screen name='Add Card' component={PostFlashCard} />
     </Stack.Navigator>
   );
 }
@@ -92,8 +87,13 @@ function MyTabs() {
   
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Main" component={MyStack}  />
-      <Tab.Screen name="Card" component={Card} />
+      <Tab.Screen
+        name='Main'
+        component={MyStack}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen name='Card' component={Card} />
+      <Tab.Screen name='Topics' component={Topics} />
     </Tab.Navigator>
   );
 }
