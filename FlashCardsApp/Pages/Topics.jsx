@@ -1,6 +1,12 @@
 // Topics.js
 import React, { useState, useEffect } from 'react';
-import { View, Button, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Button,
+  StyleSheet,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 import TopicCard from '../components/TopicCard';
 import axios from 'axios';
 import AddTopic from '../components/AddTopic';
@@ -15,7 +21,6 @@ export default function Topics() {
     axios
       .get('https://flash-cards-be.onrender.com/api/topics')
       .then((response) => {
-        console.log(response.data);
         setTopics(response.data);
       })
       .catch(() => {})
@@ -23,12 +28,12 @@ export default function Topics() {
   }, [update]);
 
   return (
-    <View>
+    <ScrollView>
       {isLoading ? <ActivityIndicator style={{ margin: 50 }} /> : null}
       {topics.map((topic) =>
         topic.slug ? <TopicCard key={topic.slug} topic={topic} /> : null
       )}
       <AddTopic setUpdate={setUpdate} />
-    </View>
+    </ScrollView>
   );
 }
