@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { UserContext, UserProvider } from './contexts/Theme';
 
 const Stack = createStackNavigator();
 
@@ -17,9 +18,12 @@ import Card from './components/FlipCard';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <MyTabs />
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+          <MyTabs />
+      </NavigationContainer>
+    </UserProvider>
+    
   );
 }
 
@@ -82,9 +86,10 @@ function MyStack() {
 }
 
 function MyTabs() {
+  const {user} = useContext(UserContext)
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Main" component={MyStack} options={{ headerShown: false }} />
+      <Tab.Screen name="Main" component={MyStack}  />
       <Tab.Screen name="Card" component={Card} />
     </Tab.Navigator>
   );

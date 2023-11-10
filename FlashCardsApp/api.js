@@ -22,3 +22,14 @@ export const postCard = async (newCard) => {
     // console.log(response)
     return response.data.cards
 }
+
+export const getUsers = async () => {
+    const response = await flashCardsApi.get('/users');
+    
+    return response.data
+}
+
+export const postUsers = async (newUser) => {
+    const response = await flashCardsApi.post('/users', newUser);
+    return response.data.user
+}

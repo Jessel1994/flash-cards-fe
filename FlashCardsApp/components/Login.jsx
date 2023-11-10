@@ -1,12 +1,47 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { UserContext } from '../contexts/Theme';
+import { getUsers } from '../api';
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('');
+  const {user, setUser} = useContext(UserContext)
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [profiles, setProfiles] = useState([])
+  const [loginError, setLoginError] = useState(null)
 
-  const handleLogIn = () => {
-    // Implement your login logic here
+  useEffect (() => {
+    getUsers().then((response) => {
+     
+      setProfiles(response)
+      
+    })
+  }, [])
+ 
+ 
+
+  const handleLogIn = (username, password) => {
+    
+   
+    
+    
+    console.log(username)
+    setPassword(password)
+    console.log(password)
+    console.log(profiles)
+    console.log(Boolean(profiles.find(user => user.username === username && user.password === password)))
+
+    if(Boolean(profiles.find(user => user.username === username && user.password === password))) {
+      return (username, password)
+    } else {
+      setLoginError("Invalid username or password")
+      return loginError;
+
+    }
+
+    
+    
+
   };
 
   const navigateToSignUp = () => {
@@ -17,12 +52,12 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text>Email</Text>
+        <Text>Username</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter your email"
-          value={email}
-          onChangeText={setEmail}
+          placeholder="Enter your username"
+          value={username}
+          onChangeText={text => setUsername(text)}
         />
       </View>
 
