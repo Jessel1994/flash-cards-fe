@@ -1,17 +1,22 @@
 // Topics.js
 import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+
 import {
   View,
   Button,
   StyleSheet,
   ActivityIndicator,
   ScrollView,
+  Touchable,
+  TouchableOpacity,
 } from 'react-native';
 import TopicCard from '../components/TopicCard';
 import axios from 'axios';
 import AddTopic from '../components/AddTopic';
+const url = 'https://flash-cards-be.onrender.com/api/topics';
 
-export default function Topics() {
+export default function Topics({ navigation }) {
   const [topics, setTopics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [update, setUpdate] = useState(true);
@@ -19,7 +24,7 @@ export default function Topics() {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get('https://flash-cards-be.onrender.com/api/topics')
+      .get(url)
       .then((response) => {
         setTopics(response.data);
       })
@@ -30,9 +35,12 @@ export default function Topics() {
   return (
     <ScrollView>
       {isLoading ? <ActivityIndicator style={{ margin: 50 }} /> : null}
-      {topics.map((topic) =>
-        topic.slug ? <TopicCard key={topic.slug} topic={topic} /> : null
-      )}
+      {topics.map((topic) => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('View Cards', { topic })}>
+          <TopicCard key={topic.slug} topic={topic} />
+        </TouchableOpacity>
+      ))}
       <AddTopic setUpdate={setUpdate} />
     </ScrollView>
   );
