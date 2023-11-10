@@ -1,16 +1,17 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Stack = createStackNavigator();
 
-import SignUpForm from './components/SignUp';
-import {CreateCardScreen, PostFlashCard} from './components/PostFlashCard';
-import Login from './components/Login';
-import Card from './components/FlipCard';
+import SignUpForm from "./components/SignUp";
+import { CreateCardScreen, PostFlashCard } from "./components/PostFlashCard";
+import Login from "./components/Login";
+import Card from "./components/FlipCard";
+import Topics from "./Pages/Topics";
 
 export default function App() {
   return (
@@ -23,17 +24,15 @@ export default function App() {
 function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      
-    
       <Text>Welcome to the Flash Cards App!</Text>
-      
+
       <Text>Here you can make yourself flashcards and revise!</Text>
-      
+
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.7}
         onPress={() => {
-          navigation.navigate('SignUp');
+          navigation.navigate("SignUp");
         }}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
@@ -42,7 +41,7 @@ function HomeScreen({ navigation }) {
         style={styles.button}
         activeOpacity={0.7}
         onPress={() => {
-          navigation.navigate('Login');
+          navigation.navigate("Login");
         }}
       >
         <Text style={styles.buttonText}>Log In</Text>
@@ -52,7 +51,7 @@ function HomeScreen({ navigation }) {
         style={styles.button}
         activeOpacity={0.7}
         onPress={() => {
-          navigation.navigate('Card');
+          navigation.navigate("Card");
         }}
       >
         <Text style={styles.buttonText}>Card</Text>
@@ -80,8 +79,13 @@ function MyStack() {
 function MyTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={MyStack} options={{ headerShown: false }} />
+      <Tab.Screen
+        name="Home"
+        component={MyStack}
+        options={{ headerShown: false }}
+      />
       <Tab.Screen name="Card" component={Card} />
+      <Tab.Screen name="Topics" component={Topics} />
     </Tab.Navigator>
   );
 }
@@ -89,21 +93,21 @@ function MyTabs() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   button: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: "lightgreen",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
     marginVertical: 20,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
