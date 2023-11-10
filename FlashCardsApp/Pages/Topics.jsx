@@ -1,45 +1,34 @@
 // Topics.js
-import React, { useState } from "react";
-import { View, Button, StyleSheet } from "react-native";
-import TopicCard from "../components/TopicCard";
-
-const dataTopics = [
-  {
-    name: "Topic 1",
-    countCards: 5,
-  },
-  {
-    name: "Topic 2",
-    countCards: 45,
-  },
-  {
-    name: "Topic 3",
-    countCards: 10,
-  },
-  {
-    name: "Topic 4",
-    countCards: 15,
-  },
-];
+import React, { useState, useEffect } from 'react';
+import { View, Button, StyleSheet, ActivityIndicator } from 'react-native';
+import TopicCard from '../components/TopicCard';
+import axios from 'axios';
+import AddTopic from '../components/AddTopic';
 
 export default function Topics() {
-  const [topics, setTopics] = useState(dataTopics);
+  const [topics, setTopics] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [update, setUpdate] = useState(true);
 
-  const addNewTopic = () => {
-    const newTopic = {
-      name: `New Topic ${topics.length + 1}`,
-      countCards: 0,
-    };
-
-    setTopics([...topics, newTopic]);
-  };
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get('https://flash-cards-be.onrender.com/api/topics')
+      .then((response) => {
+        console.log(response.data);
+        setTopics(response.data);
+      })
+      .catch(() => {})
+      .finally(setIsLoading(false));
+  }, [update]);
 
   return (
     <View>
-      {topics.map((topic) => (
-        <TopicCard key={topic.name} topic={topic} />
-      ))}
-      <Button title="Add New Topic" onPress={addNewTopic} />
+      {isLoading ? <ActivityIndicator style={{ margin: 50 }} /> : null}
+      {topics.map((topic) =>
+        topic.slug ? <TopicCard key={topic.slug} topic={topic} /> : null
+      )}
+      <AddTopic setUpdate={setUpdate} />
     </View>
   );
 }
