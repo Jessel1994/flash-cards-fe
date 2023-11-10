@@ -17,6 +17,7 @@ import Card from './components/FlipCard';
 
 
 export default function App() {
+  
   return (
     <UserProvider>
       <NavigationContainer>
@@ -28,6 +29,7 @@ export default function App() {
 }
 
 function HomeScreen({ navigation }) {
+  
   return (
     <View style={styles.container}>
       
@@ -87,6 +89,7 @@ function MyStack() {
 
 function MyTabs() {
   const {user} = useContext(UserContext)
+  
   return (
     <Tab.Navigator>
       <Tab.Screen name="Main" component={MyStack}  />

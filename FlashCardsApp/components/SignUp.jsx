@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { UserContext } from '../contexts/Theme';
 
 import { getUsers, postUsers } from '../api';
 
@@ -9,11 +10,12 @@ const SignUpForm = ({ navigation }) => {
   const [error, setError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+  const {user, setUser} = useContext(UserContext)
   
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-
+  console.log(user)
   const handleSignUp = () => {
     const newUser = {
       username: username,
@@ -69,6 +71,7 @@ const SignUpForm = ({ navigation }) => {
     
     <View style={styles.inputContainer}>
       <Text>Username</Text>
+      {/* <Text>{user}</Text> */}
       <TextInput
         style={styles.input}
         placeholder="Enter your username"
