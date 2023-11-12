@@ -11,7 +11,6 @@ export const getCards = async () => {
 }
 
 export const getSingleCard = async (card_id) => {
-    console.log("card_id from api", card_id)
     const response = await flashCardsApi.get(`/cards/${card_id}`);
     // console.log("from api single card ", response)
     return response.data;
@@ -21,4 +20,9 @@ export const postCard = async (newCard) => {
     const response = await flashCardsApi.post('/cards', newCard);
     // console.log(response)
     return response.data.cards
+}
+
+export const deleteCard = async (card_id) => {
+    const response = await flashCardsApi.delete(`/cards/${card_id}`);
+    return response.data.card
 }
