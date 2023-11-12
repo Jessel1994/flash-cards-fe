@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
   View, ScrollView, Text,
-  StyleSheet, TouchableOpacity,
+  StyleSheet, TouchableOpacity, Button, Pressable
 } from "react-native";
 import { getCards , deleteCard} from "../api";
 import { UserContext } from '../contexts/Theme';
@@ -69,18 +69,17 @@ export const ViewCards = ({navigation}) => {
       {cards.map((card) => {
         if (card.author === user) {
           return (
-     
-            <View style={styles.cardListItem} key={card._id}>
-          
+            <View style={styles.cardListItem} key={card._id}> 
             <TouchableOpacity key={card._id} onPress={()=>{navigation.navigate('Card', {card_id: card._id})}}>
           <Text>{card.question}</Text>
-          <Button disabled ={isDeleting} onPress={()=>{handleSubmit(card._id)}}>Delete</Button>
+          <Button title="Delete" color="red" disabled ={isDeleting} onPress={()=>{handleSubmit(card._id)}} style={styles.deleteButton} />
           </TouchableOpacity>
-        </View>       
+        </View>     
       )
         }
       } )}
     </ScrollView>
+   
     </View>
       );
 };
@@ -98,4 +97,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
   },
+  deleteButton: {
+    borderRadius: 100,
+  }
 });
