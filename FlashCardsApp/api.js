@@ -26,3 +26,13 @@ export const deleteCard = async (card_id) => {
     const response = await flashCardsApi.delete(`/cards/${card_id}`);
     return response.data.card
 }
+export const getUsers = async () => {
+    const response = await flashCardsApi.get('/users');
+    
+    return response.data
+}
+
+export const postUsers = async (newUser) => {
+    const response = await flashCardsApi.post('/users', newUser);
+    return response.data.user
+}

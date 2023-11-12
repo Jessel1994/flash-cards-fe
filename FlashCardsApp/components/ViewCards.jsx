@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View, ScrollView, Text,
   StyleSheet, TouchableOpacity,
 } from "react-native";
 import { getCards , deleteCard} from "../api";
+import { UserContext } from '../contexts/Theme';
 
 export const ViewCards = ({navigation}) => {
+  const {user} = useContext(UserContext)
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState([]);
   const [error, setError] = useState(null);
@@ -64,7 +66,9 @@ export const ViewCards = ({navigation}) => {
   return (
     <View style={styles.cardsAllContainer}>
     <ScrollView>
-      {cards.map((card) => (
+      {cards.map((card) => {
+        if (card.author === user) {
+          return (
      
             <View style={styles.cardListItem} key={card._id}>
           
@@ -73,7 +77,9 @@ export const ViewCards = ({navigation}) => {
           <Button disabled ={isDeleting} onPress={()=>{handleSubmit(card._id)}}>Delete</Button>
           </TouchableOpacity>
         </View>       
-      ))}
+      )
+        }
+      } )}
     </ScrollView>
     </View>
       );
