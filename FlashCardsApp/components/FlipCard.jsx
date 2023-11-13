@@ -1,14 +1,13 @@
 import FlipCard from 'react-native-flip-card'
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { getSingleCard } from '../api';
+import { getSingleCard, updateCardIsCorrect } from '../api';
 
 const Card = () => {
   const [isFlipped, setIsFlipped] = useState(false);
-  // const card_id = "654b726c2f203df63a9f608f";
-
-  const route = useRoute();
+  const [isCorrect, setIsCorrect] = useState(false);
+   const route = useRoute();
   const { card_id } = route.params;
   const [isLoading, setIsLoading] = useState(true);
   const [singleCard, setSingleCard] = useState();
@@ -23,7 +22,25 @@ const Card = () => {
     })
     .catch((error) => {});
 
-  }, [card_id]);
+    setIsCorrect(singleCard?.isCorrect || false);
+  }, [card_id, singleCard?.isCorrect]);
+
+
+  const handleCorrectPress = async () => {
+    try {
+      const updatedCard = await updateCardIsCorrect(card_id);
+      setIsCorrect(true);
+
+    console.log('Card marked as correct:', updatedCard);
+    } catch (error) {
+      console.error('Error marking card as correct:', error);
+    }
+  };
+
+  const handleIncorrectPress = () => {
+    setIsCorrect(false);
+    console.log('Card marked as incorrect');
+  };
 
   if (isLoading) {
     return (
@@ -56,11 +73,34 @@ const Card = () => {
           </Text>
         </View>
         {/* Back Side */}
+        
         <View style={[styles.back, styles.cardSide]}>
+        
           <Text>
           {isFlipped ? singleCard.question : singleCard.answer }
           </Text>
         </View>
+      
+        <View style={styles.buttonsContainer}>
+
+        {/* Touchable opacity please */}
+        <Button title = "Correct Answer"
+           onPress={() =>{handleCorrectPress}} 
+          accessibilityLabel="Press to asses yourself correct" 
+          style={styles.correctBtn}>
+
+          </Button>
+
+          <Button title = "Incorrect Answer"
+          onPress={() =>{handleIncorrectPress}} 
+          accessibilityLabel="Press to asses yourself incorrect" 
+          style={styles.incorrectBtn}>
+
+          </Button>
+          </View>
+       
+     
+      
       </FlipCard>
     </View>
   );
@@ -82,6 +122,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   cardSide: {
+  
     width: '500px',
     height: '50%',
     backgroundColor: 'lightblue',
@@ -95,6 +136,26 @@ const styles = StyleSheet.create({
   back: {
     width: '300px',
   },
+  correctBtn: {
+    backgroundColor: '#228b22',
+
+  },
+  incorrectBtn: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 4,
+    minWidth: '48%',
+    backgroundColor: '#ff7f50', //'coral',
+    textAlign: 'center',
+  },
+  buttonsContainer: {
+    // flex: 2,
+    flexDirection: 'row',
+    // marginTop: 40,
+    // padding: 20,
+   
+    
+  }
 });
 
 export default Card;

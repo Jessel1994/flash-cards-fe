@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { UserContext, UserProvider } from './contexts/Theme';
-
+import NotFoundScreen from './components/NotFoundScreen';
 const Stack = createStackNavigator();
 
 import SignUpForm from './components/SignUp';
@@ -53,14 +53,7 @@ function HomeScreen({ navigation }) {
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.7}
-        onPress={() => {
-          navigation.navigate('Card');
-        }}>
-        <Text style={styles.buttonText}>Card</Text>
-      </TouchableOpacity>
+      
       <StatusBar style='auto' />
     </View>
   );
@@ -78,6 +71,7 @@ function MyStack() {
       <Stack.Screen name='Create Card' component={OptionsScreen} />
       <Stack.Screen name='View Cards' component={ViewCards} />
       <Stack.Screen name='Add Card' component={PostFlashCard} />
+      <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Not Found' }}/>
     </Stack.Navigator>
   );
 }
@@ -92,7 +86,7 @@ function MyTabs() {
         component={MyStack}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name='Card' component={Card} />
+      <Tab.Screen name='View Cards' component={ViewCards} />
       <Tab.Screen name='Topics' component={Topics} />
     </Tab.Navigator>
   );
