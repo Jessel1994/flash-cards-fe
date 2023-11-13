@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { UserContext, UserProvider } from './contexts/Theme';
-
+import NotFoundScreen from './components/NotFoundScreen';
 const Stack = createStackNavigator();
 
 import SignUpForm from './components/SignUp';
@@ -71,6 +71,7 @@ function MyStack() {
       <Stack.Screen name='Create Card' component={OptionsScreen} />
       <Stack.Screen name='View Cards' component={ViewCards} />
       <Stack.Screen name='Add Card' component={PostFlashCard} />
+      <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Not Found' }}/>
     </Stack.Navigator>
   );
 }
