@@ -4,6 +4,10 @@ const flashCardsApi = axios.create({
   baseURL: 'https://flash-cards-be.onrender.com/api',
 });
 
+// const flashCardsApi = axios.create({
+//   baseURL: 'http://localhost:9090/api',
+// });
+
 export const getCards = async () => {
   const response = await flashCardsApi.get('/cards');
   // console.log(response)

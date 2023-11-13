@@ -1,12 +1,8 @@
-// Topics.js
 import React, { useState, useEffect } from 'react';
-
 import { Text, View, ActivityIndicator, ScrollView } from 'react-native';
-
 import TopicCard from '../components/TopicCard';
 import { getTopics } from '../api';
 import AddTopic from '../components/AddTopic';
-const url = 'https://flash-cards-be.onrender.com/api/topics';
 
 export default function Topics({ navigation }) {
   const [topics, setTopics] = useState([]);
