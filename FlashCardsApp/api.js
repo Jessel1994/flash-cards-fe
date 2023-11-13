@@ -38,8 +38,6 @@ export const updateCardIsCorrect = async (card_id, answer, topic, isCorrect) => 
             topic: topic,
             isCorrect: isCorrect,
         });
-
-        // console.log(response.data);
         return response.data.card;
     } catch (error) {
         console.error('Error updating card:', error);
