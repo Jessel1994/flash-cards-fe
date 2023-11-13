@@ -23,8 +23,8 @@ const Login = ({ navigation }) => {
   const handleLogIn = (user) => {
     
     const navigateToCards = () => {
-      // Use navigation to navigate to the "SignUp" page
-      navigation.navigate('View Cards');
+      
+      navigation.navigate('Create Card');
     };
     
     

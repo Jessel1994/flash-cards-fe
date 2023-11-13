@@ -53,14 +53,7 @@ function HomeScreen({ navigation }) {
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.7}
-        onPress={() => {
-          navigation.navigate('Card');
-        }}>
-        <Text style={styles.buttonText}>Card</Text>
-      </TouchableOpacity>
+      
       <StatusBar style='auto' />
     </View>
   );
@@ -92,7 +85,7 @@ function MyTabs() {
         component={MyStack}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name='Card' component={Card} />
+      <Tab.Screen name='View Cards' component={ViewCards} />
       <Tab.Screen name='Topics' component={Topics} />
     </Tab.Navigator>
   );
