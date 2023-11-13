@@ -1,16 +1,13 @@
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import axios from 'axios';
-import { postTopic } from '../api';
+import { patchTopic, deleteTopic } from '../api';
 
-export default function AddTopic({ setUpdate }) {
-  const [isAdding, setIsAdding] = useState(false);
+export default function EditTopic({ topic, setModalVisible, setUpdate }) {
   const [isError, setIsError] = useState(false);
   const [form, setForm] = useState({
-    name: '',
-    slug: '',
+    slug: topic.slug,
+    name: topic.name,
   });
-
   const onChangeHandler = (text, id) => {
     setForm((val) => {
       const obj = { name: val.name, slug: val.slug };
@@ -20,20 +17,31 @@ export default function AddTopic({ setUpdate }) {
   };
   const buttonHandler = async () => {
     try {
-      await postTopic(form).then(() => {
+      await patchTopic(form).then(() => {
         setForm({
           name: '',
           slug: '',
         });
-        setIsAdding(false);
+        setModalVisible(false);
         setUpdate((val) => !val);
       });
+    } catch (err) {
+      setIsError(true);
+    } finally {
+    }
+  };
+
+  const deleteHandler = async function () {
+    try {
+      await deleteTopic(topic.slug);
+      setModalVisible(false);
+      setUpdate((val) => !val);
     } catch {
       setIsError(true);
     }
   };
 
-  return isAdding ? (
+  return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <Text>Topic name</Text>
@@ -44,6 +52,7 @@ export default function AddTopic({ setUpdate }) {
           onChangeText={(text) => onChangeHandler(text, 'name')}
         />
       </View>
+
       <View style={styles.inputContainer}>
         <Text>Topic slug</Text>
         <TextInput
@@ -60,8 +69,8 @@ export default function AddTopic({ setUpdate }) {
       ) : null}
       <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
         <Button
-          title='Cancel'
-          onPress={() => setIsAdding(false)}
+          title='Delete topic'
+          onPress={() => deleteHandler()}
           style={{ backgroundColor: 'red' }}
         />
         <Button
@@ -70,14 +79,6 @@ export default function AddTopic({ setUpdate }) {
           style={styles.signUpButton}
         />
       </View>
-    </View>
-  ) : (
-    <View>
-      <Button
-        title='Add topic'
-        onPress={() => setIsAdding(true)}
-        style={styles.signUpButton}
-      />
     </View>
   );
 }
