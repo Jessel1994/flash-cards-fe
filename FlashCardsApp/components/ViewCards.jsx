@@ -16,11 +16,10 @@ export const ViewCards = ({navigation}) => {
 
   const handleSubmit = (card_id) => {
     alert('Card deleted')
-    if(user){
       setIsDeleting(true);
       setCards((currCards) => {
-        return currCards.filter((card) => card._id !== card_id)
-      });
+        return currCards.filter((card) => card._id !== card_id) 
+    });
       deleteCard(card_id)
       .then(() => {
         setIsDeleting(false)
@@ -32,8 +31,6 @@ export const ViewCards = ({navigation}) => {
         setDeletingCard(null)
       })
     }
-    }
-
 
   useEffect(() => {
     setIsLoading(true);
