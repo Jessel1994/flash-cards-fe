@@ -4,9 +4,13 @@ const flashCardsApi = axios.create ({
     baseURL: "https://flash-cards-be.onrender.com/api",
 })
 
-export const getCards = async () => {
-    const response = await flashCardsApi.get('/cards');
-    // console.log(response)
+export const getCards = async (topic) => {
+    const params = {}; 
+    if (topic && topic.slug) {
+        params.topic = topic.slug;
+    }
+    console.log('API Request Params:', params);
+    const response = await flashCardsApi.get('/cards', {params});
     return response.data;
 }
 
@@ -23,13 +27,40 @@ export const postCard = async (newCard) => {
     return response.data.cards
 }
 
+// delete card
+
+
+//  isCOrrect answer => patch request
+export const updateCardIsCorrect = async (card_id) => {
+    const response = await flashCardsApi.patch(`/cards/${card_id}`);
+    console.log(response.data)
+    return response.data.card;
+}
+
+//reset "isCorrect" property for all cards or on certain topic
+
+export const resetAllCardsIsCorrect = async (topic) => {
+    const params = {}; 
+    if (topic && topic.slug) {
+        params.topic = topic.slug;
+    }
+    const response = await flashCardsApi.patch('/cards', { params } );
+    console.log(response.data)
+    return response.data.cards;
+}
+
 export const getUsers = async () => {
     const response = await flashCardsApi.get('/users');
-    
     return response.data
 }
 
 export const postUsers = async (newUser) => {
     const response = await flashCardsApi.post('/users', newUser);
     return response.data.user
+}
+
+export const getTopics = async () => {
+    const response = await flashCardsApi.get('/topics');
+    console.log(response)
+    return response.data
 }
