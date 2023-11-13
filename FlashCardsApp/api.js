@@ -31,11 +31,21 @@ export const postCard = async (newCard) => {
 
 
 //  isCOrrect answer => patch request
-export const updateCardIsCorrect = async (card_id) => {
-    const response = await flashCardsApi.patch(`/cards/${card_id}`);
-    console.log(response.data)
-    return response.data.card;
-}
+export const updateCardIsCorrect = async (card_id, answer, topic, isCorrect) => {
+    try {
+        const response = await flashCardsApi.patch(`/cards/${card_id}`, {
+            answer: answer,
+            topic: topic,
+            isCorrect: isCorrect,
+        });
+
+        // console.log(response.data);
+        return response.data.card;
+    } catch (error) {
+        console.error('Error updating card:', error);
+        throw error;
+    }
+};
 
 //reset "isCorrect" property for all cards or on certain topic
 
@@ -61,6 +71,6 @@ export const postUsers = async (newUser) => {
 
 export const getTopics = async () => {
     const response = await flashCardsApi.get('/topics');
-    console.log(response)
+    // console.log(response)
     return response.data
 }

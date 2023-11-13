@@ -51,11 +51,8 @@ export const ViewCards = ({route, navigation}) => {
       </View>
     );
   }
-
-
-  console.log('Rendered Cards:', cards); // Log the cards being rendered#
-
-  
+  // console.log('Rendered Cards:', cards); // Log the cards being rendered#
+ 
   return (
     <View style={styles.cardsAllContainer}>
     <ScrollView>
@@ -92,6 +89,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 16,
     margin: 8,
-    width: 200,
+    width: 400,
   },
 });
