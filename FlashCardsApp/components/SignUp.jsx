@@ -41,7 +41,7 @@ const SignUpForm = ({ navigation }) => {
     
     setIsSigningUp(true);
 
-      // Assuming you have a signUp function that handles the API call
+      
       postUsers(newUser)
       .then((user) => {
         setPostedUser(user);
