@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, ActivityIndicator, ScrollView } from 'react-native';
-import TopicCard from '../components/TopicCard';
 import { getTopics } from '../api';
+import { UserContext } from '../contexts/Theme';
 import AddTopic from '../components/AddTopic';
+import TopicCard from '../components/TopicCard';
 
 export default function Topics({ navigation }) {
+  const { user, setUser } = useContext(UserContext);
   const [topics, setTopics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [update, setUpdate] = useState(true);
@@ -12,7 +14,7 @@ export default function Topics({ navigation }) {
   useEffect(() => {
     setIsLoading(true);
     async function loadTopics() {
-      setTopics(await getTopics());
+      setTopics(await getTopics(user));
     }
     loadTopics();
     setIsLoading(false);

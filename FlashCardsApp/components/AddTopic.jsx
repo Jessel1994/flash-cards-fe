@@ -1,18 +1,22 @@
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { postTopic } from '../api';
+import { UserContext } from '../contexts/Theme';
 
 export default function AddTopic({ setUpdate }) {
+  const { user, setUser } = useContext(UserContext);
   const [isAdding, setIsAdding] = useState(false);
   const [isError, setIsError] = useState(false);
   const [form, setForm] = useState({
     name: '',
     slug: '',
+    username: '',
   });
+  console.log(user);
 
   const onChangeHandler = (text, id) => {
     setForm((val) => {
-      const obj = { name: val.name, slug: val.slug };
+      const obj = { name: val.name, slug: val.slug, username: user };
       obj[id] = text;
       return obj;
     });
@@ -23,6 +27,7 @@ export default function AddTopic({ setUpdate }) {
         setForm({
           name: '',
           slug: '',
+          username: '',
         });
         setIsAdding(false);
         setUpdate((val) => !val);
@@ -34,6 +39,7 @@ export default function AddTopic({ setUpdate }) {
 
   return isAdding ? (
     <View style={styles.container}>
+      <Text>Username: {user}</Text>
       <View style={styles.inputContainer}>
         <Text>Topic name</Text>
         <TextInput

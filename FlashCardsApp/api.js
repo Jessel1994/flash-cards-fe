@@ -57,8 +57,8 @@ export const getUsers = async () => {
   return response.data;
 };
 
-export const getTopics = async () => {
-  return (await flashCardsApi.get('/topics')).data;
+export const getTopics = async (username) => {
+  return (await flashCardsApi.get('/topics/' + username)).data;
 };
 
 export const patchTopic = async (topic) => {
