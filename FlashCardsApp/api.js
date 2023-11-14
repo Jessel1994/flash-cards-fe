@@ -13,7 +13,7 @@ export const getCards = async (topic) => {
   if (topic && topic.slug) {
     params.topic = topic.slug;
   }
-  console.log('API Request Params:', params);
+  // console.log('API Request Params:', params);
   const response = await flashCardsApi.get('/cards', { params });
   return response.data;
 };
@@ -25,9 +25,13 @@ export const getSingleCard = async (card_id) => {
 };
 
 export const postCard = async (newCard) => {
-  const response = await flashCardsApi.post('/cards', newCard);
-  // console.log(response)
-  return response.data.cards;
+  try {
+    const response = await flashCardsApi.post('/cards', newCard);
+    return response.data.cards;
+} catch (error) {
+    console.error("Error posting card:", error);
+    throw error;
+}
 };
 
 export const deleteCard = async (card_id) => {

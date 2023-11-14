@@ -88,6 +88,7 @@ function MyTabs() {
       />
       <Tab.Screen name='View Cards' component={ViewCards} />
       <Tab.Screen name='Topics' component={Topics} />
+      <Tab.Screen name='Add Card' component={PostFlashCard} />
     </Tab.Navigator>
   );
 }
