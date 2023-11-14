@@ -4,9 +4,9 @@ import {
   ScrollView,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  TouchableOpacity, Button
 } from "react-native";
-import { getCards } from "../api";
+import { getCards, deleteCard } from "../api";
 import { UserContext } from "../contexts/Theme";
 
 export const ViewCards = ({ route, navigation }) => {
@@ -17,6 +17,26 @@ export const ViewCards = ({ route, navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState([]);
   const [error, setError] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deletingCard, setDeletingCard] = useState(null)
+
+  const handleSubmit = (card_id) => {
+    alert('Card deleted')
+      setIsDeleting(true);
+      setCards((currCards) => {
+        return currCards.filter((card) => card._id !== card_id) 
+    });
+      deleteCard(card_id)
+      .then(() => {
+        setIsDeleting(false)
+        setDeletingCard(null)
+      })
+      .catch((error) => {
+        setCards((currCards) => [...currCards])
+        setIsDeleting(false)
+        setDeletingCard(null)
+      })
+    }
 
   useEffect(() => {
     setIsLoading(true);
@@ -64,25 +84,24 @@ export const ViewCards = ({ route, navigation }) => {
             /* if (card.author !== user) { */
           }
           return (
-            <View style={styles.cardListItem} key={card._id}>
-              <TouchableOpacity
-                key={card._id}
-                onPress={() => {
-                  navigation.navigate("Card", { card_id: card._id });
-                }}
-              >
-                <Text>{card.question}</Text>
-              </TouchableOpacity>
-            </View>
-          );
-          {
-            /* } */
-          }
-        })}
-      </ScrollView>
+            <View style={styles.cardListItem} key={card._id}> 
+            <TouchableOpacity key={card._id} onPress={()=>{navigation.navigate('Card', {card_id: card._id})}}>
+          <Text>{card.question}</Text>
+          </TouchableOpacity>
+         <View style={styles.deleteButton}>
+         <Button title="Delete"  color= "red"  onPress={()=>{handleSubmit(card._id)}}  />
+         </View>
+        </View>   
+      
+      );
+      
+      } )}
+    </ScrollView>
+   
+      
     </View>
   );
-};
+    }
 
 const styles = StyleSheet.create({
   cardsAllContainer: {
@@ -99,5 +118,13 @@ const styles = StyleSheet.create({
     padding: 16,
     margin: 8,
     width: 400,
+    height: 150,
   },
+  deleteButton: {
+    borderRadius: 100,
+    position: "absolute", 
+    bottom: "16px",
+    flex: 1,
+    right: 10
+  }
 });
