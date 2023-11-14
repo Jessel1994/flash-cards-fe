@@ -9,26 +9,25 @@ export const getCards = async (topic) => {
     if (topic && topic.slug) {
         params.topic = topic.slug;
     }
-    console.log('API Request Params:', params);
+    // console.log('API Request Params:', params);
     const response = await flashCardsApi.get('/cards', {params});
     return response.data;
 }
 
 export const getSingleCard = async (card_id) => {
-    console.log("card_id from api", card_id)
     const response = await flashCardsApi.get(`/cards/${card_id}`);
-    // console.log("from api single card ", response)
     return response.data;
 }
 
-export const postCard = async (newCard) => {
-    const response = await flashCardsApi.post('/cards', newCard);
-    // console.log(response)
-    return response.data.cards
-}
-
-// delete card
-
+export const postCard = async (newCard ) => {
+    try {
+        const response = await flashCardsApi.post('/cards', newCard);
+        return response.data.cards;
+    } catch (error) {
+        console.error("Error posting card:", error);
+        throw error;
+    }
+};
 
 //  isCOrrect answer => patch request
 export const updateCardIsCorrect = async (card_id, answer, topic, isCorrect) => {
