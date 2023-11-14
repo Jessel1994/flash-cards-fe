@@ -19,7 +19,6 @@ export const getCards = async (topic) => {
 };
 
 export const getSingleCard = async (card_id) => {
-  console.log('card_id from api', card_id);
   const response = await flashCardsApi.get(`/cards/${card_id}`);
   // console.log("from api single card ", response)
   return response.data;
@@ -31,13 +30,31 @@ export const postCard = async (newCard) => {
   return response.data.cards;
 };
 
+export const deleteCard = async (card_id) => {
+  const response = await flashCardsApi.delete(`/cards/${card_id}`);
+  return response.data.card;
+};
+
 // delete card
 
 //  isCOrrect answer => patch request
-export const updateCardIsCorrect = async (card_id) => {
-  const response = await flashCardsApi.patch(`/cards/${card_id}`);
-  console.log(response.data);
-  return response.data.card;
+export const updateCardIsCorrect = async (
+  card_id,
+  answer,
+  topic,
+  isCorrect
+) => {
+  try {
+    const response = await flashCardsApi.patch(`/cards/${card_id}`, {
+      answer: answer,
+      topic: topic,
+      isCorrect: isCorrect,
+    });
+    return response.data.card;
+  } catch (error) {
+    console.error('Error updating card:', error);
+    throw error;
+  }
 };
 
 //reset "isCorrect" property for all cards or on certain topic
