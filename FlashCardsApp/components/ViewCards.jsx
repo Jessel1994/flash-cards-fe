@@ -79,11 +79,10 @@ export const ViewCards = ({ route, navigation }) => {
   return (
     <View style={styles.cardsAllContainer}>
       <ScrollView>
-        {cards.map((card) => {
-          {
-            /* if (card.author !== user) { */
-          }
-          return (
+        {cards
+          .filter((card) => card.author === user)
+          .map((card) => (
+        
             <View style={styles.cardListItem} key={card._id}> 
             <TouchableOpacity key={card._id} onPress={()=>{navigation.navigate('Card', {card_id: card._id})}}>
           <Text>{card.question}</Text>
@@ -92,16 +91,12 @@ export const ViewCards = ({ route, navigation }) => {
          <Button title="Delete"  color= "red"  onPress={()=>{handleSubmit(card._id)}}  />
          </View>
         </View>   
-      
-      );
-      
-      } )}
+     ))}
     </ScrollView>
-   
-      
     </View>
   );
     }
+
 
 const styles = StyleSheet.create({
   cardsAllContainer: {
