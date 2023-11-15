@@ -81,6 +81,9 @@ const Card = () => {
             <Text style={styles.cardtext}>
               {isFlipped ? singleCard.question : singleCard.answer}
             </Text>
+
+            {/* Correct / Incorrect Buttons */}
+
             <View style={styles.buttonsContainer}>
               <Pressable
                 onPress={() => {
@@ -119,7 +122,15 @@ const Card = () => {
       ) : (
         <Text style={styles.pageUpdates}>loading...</Text>
       )}
+<<<<<<< HEAD
       
+=======
+
+      {/* move next container */}
+      <View style={styles.nextCard}>
+        
+      </View>
+>>>>>>> main
     </View>
   );
 };
@@ -133,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   card: {
-    width: "90%",
+    width: "70%",
     height: "200px",
     marginTop: "30px",
     // alignItems: 'center',
@@ -142,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   cardSide: {
-    width: "500px",
+    width: "400px",
     height: "50%",
     backgroundColor: "lightblue",
     alignItems: "center",
