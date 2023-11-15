@@ -58,6 +58,18 @@ function HomeScreen({ navigation }) {
 }
 
 const Stack = createStackNavigator();
+const CardsStack = createStackNavigator();
+
+function CardsStackNavigator() {
+  return (
+    <CardsStack.Navigator>
+      <CardsStack.Screen name='ViewCards' component={ViewCards} />
+      <CardsStack.Screen name='Card' component={Card} />
+      
+    </CardsStack.Navigator>
+  );
+}
+
 
 function AuthStack() {
   return (
@@ -66,8 +78,8 @@ function AuthStack() {
       <Stack.Screen name='SignUp' component={SignUpForm} />
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name="Welcome" options={{headerShown: false}} component={MainTabs}/>
-      <Stack.Screen name="View" component={ViewCards}/>
-      <Stack.Screen name="Card" component={Card}/>
+      
+      
     </Stack.Navigator>
   );
 }
@@ -94,7 +106,7 @@ function MainTabs() {
 
       <Tab.Screen
         name='View Cards'
-        component={ViewCards}
+        component={CardsStackNavigator}
         options={{
           tabBarLabel: 'View Cards',
           tabBarIcon: ({ color, size }) => (
