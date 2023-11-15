@@ -67,7 +67,9 @@ export const resetAllCardsIsCorrect = async (username, topic) => {
     params.topic = topic.slug;
     params.user = username;
   }
-  const response = await flashCardsApi.patch('/cards', { params });
+  const requestBody = { isCorrect: false };
+  console.log(params)
+  const response = await flashCardsApi.patch('/cards', requestBody, { params });
   console.log(response.data);
   return response.data.cards;
 };

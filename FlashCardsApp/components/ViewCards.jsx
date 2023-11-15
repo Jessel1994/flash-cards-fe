@@ -1,33 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  View,
-  ScrollView,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Button,
+  View, ScrollView, Text, StyleSheet,
+  TouchableOpacity, Button, TouchableHighlight,
 } from 'react-native';
-import { getCards, deleteCard } from '../api';
+import { getCards, deleteCard, resetAllCardsIsCorrect } from '../api';
 import { UserContext } from '../contexts/Theme';
 
 export const ViewCards = ({ route, navigation }) => {
   console.log('Route Params:', route.params);
   const { user } = useContext(UserContext);
   const { topic } = route.params || {};
-  console.log(route, navigation);
+  // console.log(route, navigation);
 
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState([]);
   const [error, setError] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deletingCard, setDeletingCard] = useState(null);
+  const [resetting, setResetting] = useState(false);//?
 
-  const handleBack = (index) => {
-    const card_id = cards[index - 1]._id;
-    console.log(cards[index - 1]);
-    openSingle(card_id, index - 1);
-  };
-
+  
   useEffect(() => {
     setIsLoading(true);
     async function fetchCards() {
@@ -37,14 +29,20 @@ export const ViewCards = ({ route, navigation }) => {
           setCards(cards);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           setError(error);
         });
     }
     fetchCards();
   }, [topic]);
 
-  console.log(cards);
+  // console.log(cards);
+
+  const handleBack = (index) => {
+    const card_id = cards[index - 1]._id;
+    console.log(cards[index - 1]);
+    openSingle(card_id, index - 1);
+  };
 
   const handleNext = (index) => {
     const card_id = cards[index + 1]._id;
@@ -81,6 +79,23 @@ export const ViewCards = ({ route, navigation }) => {
       });
   };
 
+// RESETTING CARDS
+  const handleReset = async () => {
+    setResetting(true)
+    try{
+      setCards((prevCards) => prevCards.map((card) => ({ ...card, isCorrect: false })));
+      await resetAllCardsIsCorrect(user.username, topic)
+      const updatedCards = await getCards(user.username, topic); 
+      setCards(updatedCards);   
+      setResetting(false); 
+    } catch (error) {
+      console.error('Error resetting cards:', error);
+        setError(error)
+        setResetting(false); 
+      }
+    };
+  
+
   if (isLoading) {
     return (
       <View>
@@ -92,7 +107,9 @@ export const ViewCards = ({ route, navigation }) => {
   if (error) {
     return (
       <View>
-        <Text style={styles.pageUpdates}>No Results Found</Text>
+        <Text style={styles.pageUpdates}>
+          No Results Found
+        </Text>
       </View>
     );
   }
@@ -100,14 +117,21 @@ export const ViewCards = ({ route, navigation }) => {
   if (cards.length === 0) {
     return (
       <View>
-        <Text style={styles.pageUpdates}>No Cards Found on this Topic</Text>
+        <Text style={styles.pageUpdates}>
+          No Cards Found on this Topic
+        </Text>
       </View>
     );
   }
-  console.log('Rendered Cards:', cards[0].author); // Log the cards being rendered#
+  // console.log('Rendered Cards:', cards[0].author); // Log the cards being rendered#
 
   return (
     <View style={styles.cardsAllContainer}>
+     <TouchableHighlight onPress={() => handleReset()}>
+        <View style={styles.resetter}>
+          <Text>Touch Here to Reset</Text>
+        </View>
+      </TouchableHighlight>
       <ScrollView>
         {cards.map((card, index) => (
           <View style={styles.cardListItem} key={card._id}>
@@ -144,6 +168,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 8,
+  },
+  resetter: {
+    margin: "auto",
+    height: 40,
+    backgroundColor: 'lightgreen',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 8,
+
   },
   cardListItem: {
     borderWidth: 1,

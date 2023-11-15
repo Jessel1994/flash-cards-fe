@@ -10,7 +10,7 @@ import {
 import SelectDropdown from 'react-native-select-dropdown';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { postCard, getTopics } from "../api";
-import { OptionsScreen } from "./OptionsScreen";
+import {Topics} from '../Pages/Topics';
 import { UserContext } from "../contexts/Theme";
 
 
@@ -30,7 +30,7 @@ export const PostFlashCard = ({ navigation, route }) => {
   //fetching topics
   useEffect(() => {
     setIsLoading(true);
-    getTopics(user).then((fetchedTopics) => {
+    getTopics(user.username).then((fetchedTopics) => {
       console.log("fetchedTopics: >>>", fetchedTopics)
       setIsLoading(false);
       const topicNames = fetchedTopics.map(topic => topic.name);
@@ -50,15 +50,15 @@ export const PostFlashCard = ({ navigation, route }) => {
       !selectedTopic)
     ) {
       setIsSubmitting(true); // Start submitting
-      postCard({...newCard, author: user})
+      postCard({...newCard, author: user.username})
         .then((card) => {
-          setPostedCard(card);
+          setPostedCard(card)
           setQuestionBody("");
           setAnswerBody("");
-          setSelectedTopic('')
+          setSelectedTopic("")
           setIsSubmitting(false);
           // navigate back to the previous screen (CreateCardScreen)
-          navigation.goBack();
+          navigation.navigate("Topics");
         })
 
         .catch((error) => {
@@ -76,7 +76,6 @@ export const PostFlashCard = ({ navigation, route }) => {
         <TextInput
           multiline
           style={styles.input}
-          placeholder="Enter Question Here"
           value={questionBody}
           onChangeText={setQuestionBody}
         />
@@ -87,18 +86,17 @@ export const PostFlashCard = ({ navigation, route }) => {
         <TextInput
           multiline
           style={styles.input}
-          placeholder="Enter Answer Here"
           value={answerBody}
           onChangeText={setAnswerBody}
         />
       </View>
 
       <View style={styles.inputContainer}>
-        <Text>Topic</Text>
+        <Text style={styles.labelText}>Topic</Text>
         <SelectDropdown 
           data = {topics}
           onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
+            // console.log(selectedItem, index);
             setSelectedTopic(selectedItem);
           }}
           buttonTextAfterSelection={(selectedItem, index) => {
@@ -117,12 +115,6 @@ export const PostFlashCard = ({ navigation, route }) => {
         style={styles.saveButton}
         accessibilityLabel="Press to save your flashcard"
       ></Button>
-
-      {/* <Button
-        onPress={handleDeleteCard}
-        title="Delete card"
-        style={styles.delButton}
-      ></Button> */}
       <View>
         <FontAwesomeIcon icon="fa-solid fa-house" />
       </View>
@@ -135,20 +127,28 @@ const styles = StyleSheet.create({
     width: 343,
     padding: 16,
     flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
     gap: 12,
   },
   inputContainer: {
     width: "100%",
+
   },
   input: {
     width: "100%",
     height: 60,
     borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: "10px",
+    borderColor: 'gray',
     paddingHorizontal: 10,
-  },
+    paddingVertical: 10,
+    borderColor: "gray",
+    borderRadius: 10,
+    },
+    labelText: {
+      margin: 12,
+    padding: 10,
+    },
   saveButton: {
     borderRadius: 10,
     backgroundColor: "lightgreen",

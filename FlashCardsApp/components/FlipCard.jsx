@@ -24,24 +24,40 @@ const Card = () => {
   }, [card_id]);
 
   const handleCorrectPress = async () => {
+    setIsCorrect(true);
+    setSingleCard((currentCard) => ({...currentCard, isCorrect: true}));
     try {
-      const updatedCard = await updateCardIsCorrect(
-        card_id,
+      await updateCardIsCorrect(card_id, 
         singleCard.answer,
         singleCard.topic,
-        true
-      );
-      setIsCorrect(true);
-      // console.log('Card marked as correct:', updatedCard);
+        true );
     } catch (error) {
-      // console.error('Error marking card as correct:', error);
+      setSingleCard((currentCard) => ({
+        ...currentCard,
+        isCorrect: false,
+      }));
+      console.error('Error updating card:', error);
     }
   };
 
-  const handleIncorrectPress = () => {
-    setIsCorrect(false);
-    // console.log("Card marked as incorrect");
-  };
+  const handleIncorrectPress = async ()  => {
+   setIsCorrect(false);
+   setSingleCard((currentCard) => ({...currentCard, isCorrect:false}));
+   try {
+   await updateCardIsCorrect(
+     card_id,
+     singleCard.answer,
+     singleCard.topic,
+     false
+   );
+  } catch (error) {
+    setSingleCard((currentCard) => ({
+      ...currentCard,
+      isCorrect: true,
+    }));
+    console.error('Error updating card:', error);
+  }
+}
 
   if (isLoading) {
     return (
