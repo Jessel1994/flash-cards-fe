@@ -36,10 +36,14 @@ export default function Topics({ navigation }) {
     <ScrollView>
       {isLoading ? <ActivityIndicator style={{ margin: 50 }} /> : null}
       {topics.map((topic) => (
-        <TouchableOpacity
-          onPress={() => navigation.navigate('View Cards', { topic })}>
+        <View>
           <TopicCard key={topic.slug} topic={topic} />
+          <TouchableOpacity
+          onPress={() => navigation.navigate('View Cards', { topic })}>
+          
         </TouchableOpacity>
+        </View>
+        
       ))}
       <AddTopic setUpdate={setUpdate} />
     </ScrollView>
