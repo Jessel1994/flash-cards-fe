@@ -9,10 +9,11 @@ import {
 import { getCards, deleteCard } from "../api";
 import { UserContext } from "../contexts/Theme";
 
-export const ViewCards = ({ route, navigation }) => {
+export const ViewCards = ({  route, navigation }) => {
   console.log("Route Params:", route.params);
   const { user } = useContext(UserContext);
   const { topic } = route.params || {};
+  console.log(user)
 
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState([]);
@@ -54,7 +55,7 @@ export const ViewCards = ({ route, navigation }) => {
   if (isLoading) {
     return (
       <View>
-        <Text>loading...</Text>
+        <Text style={styles.pageUpdates}>loading...</Text>
       </View>
     );
   }
@@ -62,7 +63,7 @@ export const ViewCards = ({ route, navigation }) => {
   if (error) {
     return (
       <View>
-        <Text>No Results Found</Text>
+        <Text style={styles.pageUpdates}>No Results Found</Text>
       </View>
     );
   }
@@ -70,20 +71,19 @@ export const ViewCards = ({ route, navigation }) => {
   if (cards.length === 0) {
     return (
       <View>
-        <Text>No Cards Found on this Topic</Text>
+        <Text style={styles.pageUpdates}>No Cards Found on this Topic</Text>
       </View>
     );
   }
-  // console.log('Rendered Cards:', cards); // Log the cards being rendered#
+  console.log('Rendered Cards:', cards[0].author); // Log the cards being rendered#
 
   return (
     <View style={styles.cardsAllContainer}>
       <ScrollView>
-        {cards.map((card) => {
-          {
-            /* if (card.author !== user) { */
-          }
-          return (
+        {cards
+          .filter((card) => card.author === user.username)
+          .map((card) => (
+        
             <View style={styles.cardListItem} key={card._id}> 
             <TouchableOpacity key={card._id} onPress={()=>{navigation.navigate('Card', {card_id: card._id})}}>
           <Text>{card.question}</Text>
@@ -91,17 +91,20 @@ export const ViewCards = ({ route, navigation }) => {
          <View style={styles.deleteButton}>
          <Button title="Delete"  color= "red"  onPress={()=>{handleSubmit(card._id)}}  />
          </View>
+{/* style to distinguish for correct or incorrect answer*/}
+          {card.isCorrect !== undefined && (
+          <Text style={{ color: card.isCorrect ? 'green' : 'red' }}>
+            {card.isCorrect ? 'Correct' : 'Incorrect'}
+          </Text>
+        )}
+
         </View>   
-      
-      );
-      
-      } )}
+     ))}
     </ScrollView>
-   
-      
     </View>
   );
     }
+
 
 const styles = StyleSheet.create({
   cardsAllContainer: {
@@ -126,5 +129,12 @@ const styles = StyleSheet.create({
     bottom: "16px",
     flex: 1,
     right: 10
-  }
+  },
+  pageUpdates: {
+    backgroundColor: "skyblue",
+    marginTop: "50px",
+    textAlign: "center",
+    padding: "16px",
+    fontSize: "32px",
+  },
 });

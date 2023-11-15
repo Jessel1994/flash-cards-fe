@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { postCard, getTopics } from "../api";
 import { OptionsScreen } from "./OptionsScreen";
+import { UserContext } from "../contexts/Theme";
 
 
 export const PostFlashCard = ({ navigation, route }) => {
@@ -23,11 +24,13 @@ export const PostFlashCard = ({ navigation, route }) => {
   const [answerBody, setAnswerBody] = useState("");
   const [topics, setTopics] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState('');
+  const { user } = useContext(UserContext);
+  console.log('User in PostFlashCard:', user);
 
   //fetching topics
   useEffect(() => {
     setIsLoading(true);
-    getTopics().then((fetchedTopics) => {
+    getTopics(user).then((fetchedTopics) => {
       console.log("fetchedTopics: >>>", fetchedTopics)
       setIsLoading(false);
       const topicNames = fetchedTopics.map(topic => topic.name);
@@ -35,19 +38,19 @@ export const PostFlashCard = ({ navigation, route }) => {
     })
   }, [])
 
-  const handleSubmit = () => {
+  const handleSubmitNewCard = () => {
     const newCard = {
       question: questionBody,
       answer: answerBody,
       topic: selectedTopic,
     };
-    if (
+    if (user && (
       questionBody.trim() !== "" ||
       answerBody.trim() !== "" ||
-      !selectedTopic
+      !selectedTopic)
     ) {
       setIsSubmitting(true); // Start submitting
-      postCard(newCard)
+      postCard({...newCard, author: user})
         .then((card) => {
           setPostedCard(card);
           setQuestionBody("");
@@ -110,7 +113,7 @@ export const PostFlashCard = ({ navigation, route }) => {
       <Button
         disabled={questionBody.trim() === "" || answerBody.trim() === ""}
         title={isSubmitting ? "The card is submitted" : "Save card"}
-        onPress={handleSubmit}
+        onPress={handleSubmitNewCard}
         style={styles.saveButton}
         accessibilityLabel="Press to save your flashcard"
       ></Button>

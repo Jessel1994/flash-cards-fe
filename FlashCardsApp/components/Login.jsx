@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { UserContext } from '../contexts/Theme';
+import { UserContext, UserProvider } from '../contexts/Theme';
 import { getUsers } from '../api';
 
 const Login = ({ navigation }) => {
@@ -9,6 +9,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [profiles, setProfiles] = useState([])
   const [loginError, setLoginError] = useState(null)
+
 
   useEffect (() => {
     getUsers().then((response) => {
@@ -20,33 +21,21 @@ const Login = ({ navigation }) => {
  
  
 
-  const handleLogIn = (user) => {
+  const handleLogIn = () => {
     
-    const navigateToCards = () => {
+    const foundUser = profiles.find(profile => profile.username === username && profile.password === password);
+    
+    if (foundUser) {
+      setUser(foundUser); // Set the found user in context
       
-      navigation.navigate('Create Card');
-    };
-    
-    
-    
-   
-
-    if(Boolean(profiles.find(user => user.username === username && user.password === password))) {
-      setUser(username)
-      setUsername("")
-      setPassword("")
-      navigateToCards()
-      return user
+      setUsername(""); // Clear the username state
+      setPassword(""); // Clear the password state
+      navigation.navigate('Welcome'); // Navigate to the next screen
     } else {
-      setLoginError("Invalid username or password")
-      
-
+      setLoginError("Invalid username or password");
     }
-
-    
-    
-
   };
+  
 
   const navigateToSignUp = () => {
     // Use navigation to navigate to the "SignUp" page
