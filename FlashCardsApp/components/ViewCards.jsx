@@ -54,7 +54,7 @@ export const ViewCards = ({ route, navigation }) => {
   if (isLoading) {
     return (
       <View>
-        <Text>loading...</Text>
+        <Text style={styles.pageUpdates}>loading...</Text>
       </View>
     );
   }
@@ -62,7 +62,7 @@ export const ViewCards = ({ route, navigation }) => {
   if (error) {
     return (
       <View>
-        <Text>No Results Found</Text>
+        <Text style={styles.pageUpdates}>No Results Found</Text>
       </View>
     );
   }
@@ -70,11 +70,11 @@ export const ViewCards = ({ route, navigation }) => {
   if (cards.length === 0) {
     return (
       <View>
-        <Text>No Cards Found on this Topic</Text>
+        <Text style={styles.pageUpdates}>No Cards Found on this Topic</Text>
       </View>
     );
   }
-  // console.log('Rendered Cards:', cards); // Log the cards being rendered#
+  console.log('Rendered Cards:', cards); // Log the cards being rendered#
 
   return (
     <View style={styles.cardsAllContainer}>
@@ -90,6 +90,13 @@ export const ViewCards = ({ route, navigation }) => {
          <View style={styles.deleteButton}>
          <Button title="Delete"  color= "red"  onPress={()=>{handleSubmit(card._id)}}  />
          </View>
+{/* style to distinguish for correct or incorrect answer*/}
+          {card.isCorrect !== undefined && (
+          <Text style={{ color: card.isCorrect ? 'green' : 'red' }}>
+            {card.isCorrect ? 'Correct' : 'Incorrect'}
+          </Text>
+        )}
+
         </View>   
      ))}
     </ScrollView>
@@ -121,5 +128,12 @@ const styles = StyleSheet.create({
     bottom: "16px",
     flex: 1,
     right: 10
-  }
+  },
+  pageUpdates: {
+    backgroundColor: "skyblue",
+    marginTop: "50px",
+    textAlign: "center",
+    padding: "16px",
+    fontSize: "32px",
+  },
 });
