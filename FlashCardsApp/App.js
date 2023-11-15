@@ -15,21 +15,19 @@ import { ViewCards } from './components/ViewCards';
 import Login from './components/Login';
 import Card from './components/FlipCard';
 import Topics from './Pages/Topics';
+import Profile from './Pages/Profile';
 
 export default function App() {
-  
   return (
     <UserProvider>
       <NavigationContainer>
-          <MyTabs />
+        <MyTabs />
       </NavigationContainer>
     </UserProvider>
-    
   );
 }
 
 function HomeScreen({ navigation }) {
-  
   return (
     <View style={styles.container}>
       <Text>Welcome to the Flash Cards App!</Text>
@@ -41,7 +39,8 @@ function HomeScreen({ navigation }) {
         activeOpacity={0.7}
         onPress={() => {
           navigation.navigate('SignUp');
-        }}>
+        }}
+      >
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -49,12 +48,12 @@ function HomeScreen({ navigation }) {
         activeOpacity={0.7}
         onPress={() => {
           navigation.navigate('Login');
-        }}>
+        }}
+      >
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
 
-      
-      <StatusBar style='auto' />
+      <StatusBar style="auto" />
     </View>
   );
 }
@@ -64,30 +63,35 @@ const Tab = createBottomTabNavigator();
 function MyStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Home' component={HomeScreen} />
-      <Stack.Screen name='Login' component={Login} />
-      <Stack.Screen name='SignUp' component={SignUpForm} />
-      <Stack.Screen name='Card' component={Card} />
-      <Stack.Screen name='Create Card' component={OptionsScreen} />
-      <Stack.Screen name='View Cards' component={ViewCards} />
-      <Stack.Screen name='Add Card' component={PostFlashCard} />
-      <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Not Found' }}/>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="SignUp" component={SignUpForm} />
+      <Stack.Screen name="Card" component={Card} />
+      <Stack.Screen name="Create Card" component={OptionsScreen} />
+      <Stack.Screen name="View Cards" component={ViewCards} />
+      <Stack.Screen name="Add Card" component={PostFlashCard} />
+      <Stack.Screen
+        name="NotFound"
+        component={NotFoundScreen}
+        options={{ title: 'Not Found' }}
+      />
     </Stack.Navigator>
   );
 }
 
 function MyTabs() {
-  const {user} = useContext(UserContext)
-  
+  const { user } = useContext(UserContext);
+
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name='Main'
+        name="Main"
         component={MyStack}
         options={{ headerShown: false }}
       />
-      <Tab.Screen name='View Cards' component={ViewCards} />
-      <Tab.Screen name='Topics' component={Topics} />
+      <Tab.Screen name="View Cards" component={ViewCards} />
+      <Tab.Screen name="Topics" component={Topics} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 }
