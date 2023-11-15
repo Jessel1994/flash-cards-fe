@@ -66,6 +66,8 @@ function AuthStack() {
       <Stack.Screen name='SignUp' component={SignUpForm} />
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name="Welcome" options={{headerShown: false}} component={MainTabs}/>
+      <Stack.Screen name="View" component={ViewCards}/>
+      <Stack.Screen name="Card" component={Card}/>
     </Stack.Navigator>
   );
 }
