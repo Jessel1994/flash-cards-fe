@@ -47,12 +47,12 @@ export const OptionsScreen = ({ navigation, route }) => {
               
         createCardBtn: {
           borderRadius: 10,
-          backgroundColor: "lightgreen",
+          backgroundColor: 'lightgrey',
         
         },
         viewButton: {
           borderRadius: 10,
-          backgroundColor: "lightgreen",
+          backgroundColor: 'lightgreen',
         }
       });
       

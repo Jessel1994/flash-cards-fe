@@ -110,6 +110,8 @@ function MainTabs() {
           ),
         }}
       />
+     
+      <Tab.Screen name='Add Card' component={PostFlashCard} />
     </Tab.Navigator>
   );
 }
