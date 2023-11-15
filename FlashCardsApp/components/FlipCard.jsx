@@ -1,5 +1,5 @@
 import FlipCard from "react-native-flip-card";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Button } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 import { getSingleCard, updateCardIsCorrect } from "../api";
@@ -8,10 +8,11 @@ const Card = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const route = useRoute();
-  const { card_id } = route.params;
+  const { card_id, handleNext, index, handleBack} = route.params;
   const [isLoading, setIsLoading] = useState(true);
   const [singleCard, setSingleCard] = useState({});
-
+  
+ 
   useEffect(() => {
     setIsLoading(true);
     getSingleCard(card_id)
@@ -56,6 +57,7 @@ const Card = () => {
   return (
     <View style={styles.container}>
       {singleCard ? (
+        <View>
         <FlipCard
           flip={isFlipped}
           friction={6}
@@ -66,6 +68,7 @@ const Card = () => {
           alignHeight={true}
           style={styles.card}
         >
+           
           {/* Front Side */}
           <View style={[styles.face, styles.cardSide]}>
             <Text style={styles.cardtext}>
@@ -107,9 +110,16 @@ const Card = () => {
             </View>
           </View>
         </FlipCard>
+        
+        <View>
+              <Button isActive={index === 0 ? false:true}title="back" position="absolute" left="10" onPress={() => handleBack(index)}/> 
+              <Button title="Next" position="absolute" right="10" onPress={() => handleNext(index)}/>
+            </View>
+            </View>
       ) : (
         <Text style={styles.pageUpdates}>loading...</Text>
       )}
+      
     </View>
   );
 };

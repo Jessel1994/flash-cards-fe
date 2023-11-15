@@ -20,6 +20,24 @@ export const ViewCards = ({ route, navigation }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deletingCard, setDeletingCard] = useState(null)
 
+  const handleBack = (index) => {
+    
+     const card_id = cards[index - 1]._id
+    
+    console.log(cards[index-1])
+    openSingle(card_id, index-1)
+  }
+  
+  const handleNext = (index) => {
+    const card_id = cards[index + 1]._id
+
+    console.log(cards[index+1])
+    console.log("we're here")
+    openSingle(card_id, index+1)
+  }
+
+  const openSingle = (card_id, index) => {navigation.navigate('Card', {card_id: card_id, handleNext: handleNext, index:index, handleBack: handleBack})}
+
   const handleSubmit = (card_id) => {
     alert('Card deleted')
       setIsDeleting(true);
@@ -79,13 +97,13 @@ export const ViewCards = ({ route, navigation }) => {
   return (
     <View style={styles.cardsAllContainer}>
       <ScrollView>
-        {cards.map((card) => {
+        {cards.map((card, index) => {
           {
             /* if (card.author !== user) { */
           }
           return (
             <View style={styles.cardListItem} key={card._id}> 
-            <TouchableOpacity key={card._id} onPress={()=>{navigation.navigate('Card', {card_id: card._id})}}>
+            <TouchableOpacity key={card._id} onPress={() => openSingle(card._id, index)}>
           <Text>{card.question}</Text>
           </TouchableOpacity>
          <View style={styles.deleteButton}>
