@@ -8,12 +8,10 @@ const flashCardsApi = axios.create({
 //   baseURL: 'http://localhost:9090/api',
 // });
 
-export const getCards = async (topic) => {
+export const getCards = async (username, topic) => {
   const params = {};
-  if (topic && topic.slug) {
-    params.topic = topic.slug;
-  }
-  // console.log('API Request Params:', params);
+  topic ? (params.topic = topic) : (params.topic = '');
+  params.user = username;
   const response = await flashCardsApi.get('/cards', { params });
   return response.data;
 };
@@ -28,10 +26,10 @@ export const postCard = async (newCard) => {
   try {
     const response = await flashCardsApi.post('/cards', newCard);
     return response.data.cards;
-} catch (error) {
-    console.error("Error posting card:", error);
+  } catch (error) {
+    console.error('Error posting card:', error);
     throw error;
-}
+  }
 };
 
 export const deleteCard = async (card_id) => {
@@ -63,10 +61,11 @@ export const updateCardIsCorrect = async (
 
 //reset "isCorrect" property for all cards or on certain topic
 
-export const resetAllCardsIsCorrect = async (topic) => {
+export const resetAllCardsIsCorrect = async (username, topic) => {
   const params = {};
-  if (topic && topic.slug) {
+  if (topic && topic.slug && username) {
     params.topic = topic.slug;
+    params.user = username;
   }
   const response = await flashCardsApi.patch('/cards', { params });
   console.log(response.data);

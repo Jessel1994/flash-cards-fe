@@ -17,7 +17,6 @@ import Login from './components/Login';
 import Card from './components/FlipCard';
 import Topics from './Pages/Topics';
 import Welcome from './components/Welcome';
-import Profile from './Pages/Profile';
 
 export default function App() {
   const { user } = useContext(UserContext);
@@ -65,7 +64,8 @@ const CardsStack = createStackNavigator();
 function CardsStackNavigator() {
   return (
     <CardsStack.Navigator>
-      <CardsStack.Screen name="ViewCards" component={ViewCards} />
+      <CardsStack.Screen name="Topics" component={Topics} />
+      <CardsStack.Screen name="View Cards" component={ViewCards} />
       <CardsStack.Screen name="Card" component={Card} />
     </CardsStack.Navigator>
   );
@@ -107,21 +107,22 @@ function MainTabs() {
         }}
       />
 
-      <Tab.Screen
-        name="View Cards"
+      {/* <Tab.Screen
+        name='View Cards'
         component={CardsStackNavigator}
         options={{
           tabBarLabel: 'View Cards',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="cards" size={24} color="black" />
+            <MaterialCommunityIcons name='cards' size={24} color='black' />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
-        name="Topics"
-        component={Topics}
+        name="Study"
+        component={CardsStackNavigator}
         options={{
-          tabBarLabel: 'Topics',
+          headerShown: false,
+          tabBarLabel: 'Study',
           tabBarIcon: ({ color, size }) => (
             <Entypo name="light-bulb" size={size} color={color} />
           ),
@@ -129,7 +130,17 @@ function MainTabs() {
       />
 
       <Tab.Screen name="Add Card" component={PostFlashCard} />
-      <Tab.Screen name="Profile" component={Profile} />
+
+      <Tab.Screen
+        name="Profile"
+        component={CardsStackNavigator}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="profile" size={24} color="black" />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }

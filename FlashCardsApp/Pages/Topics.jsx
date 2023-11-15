@@ -4,17 +4,19 @@ import { getTopics } from '../api';
 import { UserContext } from '../contexts/Theme';
 import AddTopic from '../components/AddTopic';
 import TopicCard from '../components/TopicCard';
+import { createStackNavigator } from '@react-navigation/stack';
 
 export default function Topics({ navigation }) {
   const { user, setUser } = useContext(UserContext);
   const [topics, setTopics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [update, setUpdate] = useState(true);
+  const CardsStack = createStackNavigator();
 
   useEffect(() => {
     setIsLoading(true);
     async function loadTopics() {
-      setTopics(await getTopics(user));
+      setTopics(await getTopics(user.username));
     }
     loadTopics();
     setIsLoading(false);
