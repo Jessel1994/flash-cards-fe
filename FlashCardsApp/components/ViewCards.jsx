@@ -14,7 +14,7 @@ export const ViewCards = ({ route, navigation }) => {
   console.log('Route Params:', route.params);
   const { user } = useContext(UserContext);
   const { topic } = route.params || {};
-  console.log(user);
+  console.log(route, navigation);
 
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState([]);
@@ -24,20 +24,37 @@ export const ViewCards = ({ route, navigation }) => {
 
   const handleBack = (index) => {
     const card_id = cards[index - 1]._id;
-
     console.log(cards[index - 1]);
     openSingle(card_id, index - 1);
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+    async function fetchCards() {
+      await getCards(user.username, topic.name)
+        .then((cards) => {
+          setIsLoading(false);
+          setCards(cards);
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(error);
+        });
+    }
+    fetchCards();
+  }, [topic]);
+
+  console.log(cards);
 
   const handleNext = (index) => {
     const card_id = cards[index + 1]._id;
 
     console.log(cards[index + 1]);
-    console.log("we're here");
     openSingle(card_id, index + 1);
   };
 
   const openSingle = (card_id, index) => {
+    console.log("we're here");
     navigation.navigate('Card', {
       card_id: card_id,
       handleNext: handleNext,
@@ -63,22 +80,6 @@ export const ViewCards = ({ route, navigation }) => {
         setDeletingCard(null);
       });
   };
-
-  useEffect(() => {
-    setIsLoading(true);
-    async function fetchCards() {
-      await getCards(user.username, topic.name)
-        .then((cards) => {
-          setIsLoading(false);
-          setCards(cards);
-        })
-        .catch((error) => {
-          console.log(error);
-          setError(error);
-        });
-    }
-    fetchCards();
-  }, [topic]);
 
   if (isLoading) {
     return (
@@ -108,34 +109,30 @@ export const ViewCards = ({ route, navigation }) => {
   return (
     <View style={styles.cardsAllContainer}>
       <ScrollView>
-        {cards
-          .filter((card) => card.author === user.username)
-          .map((card) => (
-            <View style={styles.cardListItem} key={card._id}>
-              <TouchableOpacity
-                key={card._id}
+        {cards.map((card, index) => (
+          <View style={styles.cardListItem} key={card._id}>
+            <TouchableOpacity
+              key={card._id}
+              onPress={() => openSingle(card._id, index)}>
+              <Text>{card.question}</Text>
+            </TouchableOpacity>
+            <View style={styles.deleteButton}>
+              <Button
+                title='Delete'
+                color='red'
                 onPress={() => {
-                  navigation.navigate('Card', { card_id: card._id });
-                }}>
-                <Text>{card.question}</Text>
-              </TouchableOpacity>
-              <View style={styles.deleteButton}>
-                <Button
-                  title='Delete'
-                  color='red'
-                  onPress={() => {
-                    handleSubmit(card._id);
-                  }}
-                />
-              </View>
-              {/* style to distinguish for correct or incorrect answer*/}
-              {card.isCorrect !== undefined && (
-                <Text style={{ color: card.isCorrect ? 'green' : 'red' }}>
-                  {card.isCorrect ? 'Correct' : 'Incorrect'}
-                </Text>
-              )}
+                  handleSubmit(card._id);
+                }}
+              />
             </View>
-          ))}
+            {/* style to distinguish for correct or incorrect answer*/}
+            {card.isCorrect !== undefined && (
+              <Text style={{ color: card.isCorrect ? 'green' : 'red' }}>
+                {card.isCorrect ? 'Correct' : 'Incorrect'}
+              </Text>
+            )}
+          </View>
+        ))}
       </ScrollView>
     </View>
   );

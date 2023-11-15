@@ -12,9 +12,6 @@ export const getCards = async (username, topic) => {
   const params = {};
   topic ? (params.topic = topic) : (params.topic = '');
   params.user = username;
-  console.log('we are in endpoint', params);
-
-  // console.log('API Request Params:', params);
   const response = await flashCardsApi.get('/cards', { params });
   return response.data;
 };

@@ -115,11 +115,11 @@ function MainTabs() {
         }}
       /> */}
       <Tab.Screen
-        name='Topics'
+        name='Study'
         component={CardsStackNavigator}
         options={{
           headerShown: false,
-          tabBarLabel: 'Topics',
+          tabBarLabel: 'Study',
           tabBarIcon: ({ color, size }) => (
             <Entypo name='light-bulb' size={size} color={color} />
           ),
