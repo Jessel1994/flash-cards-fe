@@ -6,7 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { UserContext, UserProvider } from './contexts/Theme';
 import NotFoundScreen from './components/NotFoundScreen';
-const Stack = createStackNavigator();
+import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import SignUpForm from './components/SignUp';
 import { PostFlashCard } from './components/PostFlashCard';
@@ -15,27 +16,26 @@ import { ViewCards } from './components/ViewCards';
 import Login from './components/Login';
 import Card from './components/FlipCard';
 import Topics from './Pages/Topics';
+import Welcome from './components/Welcome';
+
 
 export default function App() {
-  
+  const { user } = useContext(UserContext);
+
   return (
     <UserProvider>
       <NavigationContainer>
-          <MyTabs />
+        {user ? <MainTabs /> : <AuthStack />}
       </NavigationContainer>
     </UserProvider>
-    
   );
 }
 
 function HomeScreen({ navigation }) {
-  
   return (
     <View style={styles.container}>
       <Text>Welcome to the Flash Cards App!</Text>
-
       <Text>Here you can make yourself flashcards and revise!</Text>
-
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.7}
@@ -52,42 +52,67 @@ function HomeScreen({ navigation }) {
         }}>
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
-
-      
       <StatusBar style='auto' />
     </View>
   );
 }
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-function MyStack() {
+function AuthStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name='Home' component={HomeScreen} />
-      <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='SignUp' component={SignUpForm} />
-      <Stack.Screen name='Card' component={Card} />
-      <Stack.Screen name='Create Card' component={OptionsScreen} />
-      <Stack.Screen name='View Cards' component={ViewCards} />
-      <Stack.Screen name='Add Card' component={PostFlashCard} />
-      <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Not Found' }}/>
+      <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen name="Welcome" options={{headerShown: false}} component={MainTabs}/>
+      <Stack.Screen name="View" component={ViewCards}/>
+      <Stack.Screen name="Card" component={Card}/>
     </Stack.Navigator>
   );
 }
 
-function MyTabs() {
-  const {user} = useContext(UserContext)
-  
+const Tab = createBottomTabNavigator();
+
+function MainTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      tabBarOptions={{
+        showLabel: true, // Set to false if you don't want to display tab labels
+      }}>
       <Tab.Screen
         name='Main'
-        component={MyStack}
-        options={{ headerShown: false }}
+        component={Welcome}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Home', // Tab label
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name='home' size={size} color={color} />
+          ),
+        }}
       />
-      <Tab.Screen name='View Cards' component={ViewCards} />
-      <Tab.Screen name='Topics' component={Topics} />
+
+      <Tab.Screen
+        name='View Cards'
+        component={ViewCards}
+        options={{
+          tabBarLabel: 'View Cards',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name='cards' size={24} color='black' />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='Topics'
+        component={Topics}
+        options={{
+          tabBarLabel: 'Topics',
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name='light-bulb' size={size} color={color} />
+          ),
+        }}
+      />
+     
       <Tab.Screen name='Add Card' component={PostFlashCard} />
     </Tab.Navigator>
   );

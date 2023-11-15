@@ -9,10 +9,11 @@ import {
 import { getCards, deleteCard } from "../api";
 import { UserContext } from "../contexts/Theme";
 
-export const ViewCards = ({ route, navigation }) => {
+export const ViewCards = ({  route, navigation }) => {
   console.log("Route Params:", route.params);
   const { user } = useContext(UserContext);
   const { topic } = route.params || {};
+  console.log(user)
 
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState([]);
@@ -74,13 +75,13 @@ export const ViewCards = ({ route, navigation }) => {
       </View>
     );
   }
-  console.log('Rendered Cards:', cards); // Log the cards being rendered#
+  console.log('Rendered Cards:', cards[0].author); // Log the cards being rendered#
 
   return (
     <View style={styles.cardsAllContainer}>
       <ScrollView>
         {cards
-          .filter((card) => card.author === user)
+          .filter((card) => card.author === user.username)
           .map((card) => (
         
             <View style={styles.cardListItem} key={card._id}> 
