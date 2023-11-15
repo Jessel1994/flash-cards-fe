@@ -16,7 +16,7 @@ export default function AddTopic({ setUpdate }) {
 
   const onChangeHandler = (text, id) => {
     setForm((val) => {
-      const obj = { name: val.name, slug: val.slug, username: user };
+      const obj = { name: val.name, slug: val.slug, username: user.username };
       obj[id] = text;
       return obj;
     });
@@ -39,7 +39,7 @@ export default function AddTopic({ setUpdate }) {
 
   return isAdding ? (
     <View style={styles.container}>
-      <Text>Username: {user}</Text>
+      <Text>Username: {user.username}</Text>
       <View style={styles.inputContainer}>
         <Text>Topic name</Text>
         <TextInput
