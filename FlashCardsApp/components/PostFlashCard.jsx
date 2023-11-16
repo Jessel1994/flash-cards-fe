@@ -25,6 +25,7 @@ export const PostFlashCard = ({ navigation, route }) => {
     getTopics(user.username).then((fetchedTopics) => {
       setIsLoading(false);
       const topicNames = fetchedTopics.map((topic) => topic.name);
+      setSelectedTopic(topic);
       setTopics(topicNames);
     });
   }, []);
@@ -39,7 +40,7 @@ export const PostFlashCard = ({ navigation, route }) => {
       (questionBody.trim() !== '' || answerBody.trim() !== '' || !selectedTopic)
     ) {
       setIsSubmitting(true); // Start submitting
-      postCard({ ...newCard, author: user })
+      postCard({ ...newCard, author: user.username })
         .then((card) => {
           setPostedCard(card);
           setQuestionBody('');
@@ -47,7 +48,7 @@ export const PostFlashCard = ({ navigation, route }) => {
           setSelectedTopic('');
           setIsSubmitting(false);
           // navigate back to the previous screen (CreateCardScreen)
-          navigation.goBack();
+          // navigation.navigate('Topics');
         })
         .catch((error) => {
           console.log('ERROR: ', error);
@@ -63,7 +64,6 @@ export const PostFlashCard = ({ navigation, route }) => {
         <TextInput
           multiline
           style={styles.input}
-          placeholder='Enter Question Here'
           value={questionBody}
           onChangeText={setQuestionBody}
         />
@@ -74,19 +74,18 @@ export const PostFlashCard = ({ navigation, route }) => {
         <TextInput
           multiline
           style={styles.input}
-          placeholder='Enter Answer Here'
           value={answerBody}
           onChangeText={setAnswerBody}
         />
       </View>
 
       <View style={styles.inputContainer}>
-        <Text>Topic</Text>
+        <Text style={styles.labelText}>Topic</Text>
         <SelectDropdown
           defaultValueByIndex={defaultValue}
           data={topics}
           onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
+            // console.log(selectedItem, index);
             setSelectedTopic(selectedItem);
           }}
           buttonTextAfterSelection={(selectedItem, index) => {
@@ -116,6 +115,7 @@ const styles = StyleSheet.create({
     width: 343,
     padding: 16,
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
     gap: 12,
   },
@@ -129,6 +129,13 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: '10px',
     paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderColor: 'gray',
+    borderRadius: 10,
+  },
+  labelText: {
+    margin: 12,
+    padding: 10,
   },
   saveButton: {
     borderRadius: 10,

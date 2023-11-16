@@ -6,8 +6,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Button,
+  TouchableHighlight,
 } from 'react-native';
-import { getCards, deleteCard } from '../api';
+import { getCards, deleteCard, resetAllCardsIsCorrect } from '../api';
 import { UserContext } from '../contexts/Theme';
 
 export const ViewCards = ({ route, navigation }) => {
@@ -18,11 +19,8 @@ export const ViewCards = ({ route, navigation }) => {
   const [error, setError] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deletingCard, setDeletingCard] = useState(null);
-
-  const handleBack = (index) => {
-    const card_id = cards[index - 1]._id;
-    openSingle(card_id, index - 1);
-  };
+  const [resetting, setResetting] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -33,12 +31,16 @@ export const ViewCards = ({ route, navigation }) => {
           setCards(cards);
         })
         .catch((error) => {
-          console.log(error);
           setError(error);
         });
     }
     fetchCards();
-  }, [topic]);
+  }, [topic, resetting, isCorrect]);
+
+  const handleBack = (index) => {
+    const card_id = cards[index - 1]._id;
+    openSingle(card_id, index - 1);
+  };
 
   const handleNext = (index) => {
     const card_id = cards[index + 1]._id;
@@ -51,6 +53,7 @@ export const ViewCards = ({ route, navigation }) => {
       handleNext: handleNext,
       index: index,
       handleBack: handleBack,
+      setIsCorrect: setIsCorrect,
     });
   };
 
@@ -70,6 +73,22 @@ export const ViewCards = ({ route, navigation }) => {
         setIsDeleting(false);
         setDeletingCard(null);
       });
+  };
+
+  // RESETTING CARDS
+  const handleReset = async () => {
+    try {
+      await resetAllCardsIsCorrect(user.username, topic);
+      // setCards((prevCards) => prevCards.map((card) => ({ ...card, isCorrect: -1 })));
+      const updatedCards = await getCards(user.username, topic);
+      // setCards(updatedCards);
+      setResetting((value) => !value);
+      // setCardAssessed(false)
+    } catch (error) {
+      console.error('Error resetting cards:', error);
+      setError(error);
+      setResetting(false);
+    }
   };
 
   if (isLoading) {
@@ -116,6 +135,11 @@ export const ViewCards = ({ route, navigation }) => {
 
   return (
     <View style={styles.cardsAllContainer}>
+      <TouchableHighlight onPress={() => handleReset()}>
+        <View style={styles.resetter}>
+          <Text>Touch Here to Reset</Text>
+        </View>
+      </TouchableHighlight>
       <ScrollView>
         {cards.map((card, index) => (
           <View style={styles.cardListItem} key={card._id}>
@@ -134,8 +158,9 @@ export const ViewCards = ({ route, navigation }) => {
               />
             </View>
             {/* style to distinguish for correct or incorrect answer*/}
-            {card.isCorrect !== undefined && (
-              <Text style={{ color: card.isCorrect ? 'green' : 'red' }}>
+
+            {card.isCorrect === -1 ? null : (
+              <Text style={{ color: card.isCorrect ? 'green' : 'coral' }}>
                 {card.isCorrect ? 'Correct' : 'Incorrect'}
               </Text>
             )}
@@ -161,6 +186,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 8,
+  },
+  resetter: {
+    margin: 'auto',
+    height: 40,
+    backgroundColor: 'lightgreen',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 8,
   },
   cardListItem: {
     borderWidth: 1,
