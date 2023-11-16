@@ -63,7 +63,11 @@ const CardsStack = createStackNavigator();
 function CardsStackNavigator() {
   return (
     <CardsStack.Navigator>
-      <CardsStack.Screen name='Topics' component={Topics} />
+      <CardsStack.Screen
+        name='Topics'
+        component={Topics}
+        options={{ headerShown: false }}
+      />
       <CardsStack.Screen name='View Cards' component={ViewCards} />
       <CardsStack.Screen name='Card' component={Card} />
     </CardsStack.Navigator>
@@ -110,6 +114,7 @@ function MainTabs() {
         name='Study'
         component={CardsStackNavigator}
         options={{
+          headerShown: false,
           headerShown: false,
           tabBarLabel: 'Study',
           tabBarIcon: ({ color, size }) => (

@@ -25,6 +25,7 @@ export const PostFlashCard = ({ navigation, route }) => {
     getTopics(user.username).then((fetchedTopics) => {
       setIsLoading(false);
       const topicNames = fetchedTopics.map((topic) => topic.name);
+      setSelectedTopic(topic);
       setTopics(topicNames);
     });
   }, []);
@@ -73,7 +74,6 @@ export const PostFlashCard = ({ navigation, route }) => {
         <TextInput
           multiline
           style={styles.input}
-          placeholder='Enter Answer Here'
           value={answerBody}
           onChangeText={setAnswerBody}
         />

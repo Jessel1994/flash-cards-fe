@@ -39,7 +39,6 @@ export const ViewCards = ({ route, navigation }) => {
 
   const handleBack = (index) => {
     const card_id = cards[index - 1]._id;
-    console.log(cards[index - 1]);
     openSingle(card_id, index - 1);
   };
 

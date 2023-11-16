@@ -34,7 +34,7 @@ export default function Topics({ navigation }) {
     <View>
       <Text
         style={{
-          margin: 8,
+          margin: 18,
           fontWeight: 600,
           fontSize: 20,
         }}>
