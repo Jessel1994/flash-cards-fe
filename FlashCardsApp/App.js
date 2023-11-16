@@ -76,6 +76,8 @@ function AuthStack() {
       <Stack.Screen name='Home' component={HomeScreen} />
       <Stack.Screen name='SignUp' component={SignUpForm} />
       <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen name='Create Card' component={PostFlashCard} />
+
       <Stack.Screen
         name='Welcome'
         options={{ headerShown: false }}
@@ -110,6 +112,17 @@ function MainTabs() {
         options={{
           headerShown: false,
           tabBarLabel: 'Study',
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name='light-bulb' size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name='Create Cards'
+        component={PostFlashCard}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Create Cards',
           tabBarIcon: ({ color, size }) => (
             <Entypo name='light-bulb' size={size} color={color} />
           ),

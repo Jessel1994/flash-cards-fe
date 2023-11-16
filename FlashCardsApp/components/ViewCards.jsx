@@ -11,11 +11,8 @@ import { getCards, deleteCard } from '../api';
 import { UserContext } from '../contexts/Theme';
 
 export const ViewCards = ({ route, navigation }) => {
-  console.log('Route Params:', route.params);
   const { user } = useContext(UserContext);
   const { topic } = route.params || {};
-  console.log(route, navigation);
-
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState([]);
   const [error, setError] = useState(null);
@@ -24,7 +21,6 @@ export const ViewCards = ({ route, navigation }) => {
 
   const handleBack = (index) => {
     const card_id = cards[index - 1]._id;
-    console.log(cards[index - 1]);
     openSingle(card_id, index - 1);
   };
 
@@ -44,17 +40,12 @@ export const ViewCards = ({ route, navigation }) => {
     fetchCards();
   }, [topic]);
 
-  console.log(cards);
-
   const handleNext = (index) => {
     const card_id = cards[index + 1]._id;
-
-    console.log(cards[index + 1]);
     openSingle(card_id, index + 1);
   };
 
   const openSingle = (card_id, index) => {
-    console.log("we're here");
     navigation.navigate('Card', {
       card_id: card_id,
       handleNext: handleNext,
@@ -93,6 +84,15 @@ export const ViewCards = ({ route, navigation }) => {
     return (
       <View>
         <Text style={styles.pageUpdates}>No Results Found</Text>
+        <View style={{ padding: 12 }}>
+          <Button
+            title={'Add card'}
+            style={{ padding: 8 }}
+            onPress={() => {
+              navigation.navigate('Create Card', { topic: topic.name });
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -101,10 +101,18 @@ export const ViewCards = ({ route, navigation }) => {
     return (
       <View>
         <Text style={styles.pageUpdates}>No Cards Found on this Topic</Text>
+        <View style={{ padding: 12 }}>
+          <Button
+            title={'Add card'}
+            style={{ padding: 8 }}
+            onPress={() => {
+              navigation.navigate('Create Card', { topic: topic.name });
+            }}
+          />
+        </View>
       </View>
     );
   }
-  console.log('Rendered Cards:', cards[0].author); // Log the cards being rendered#
 
   return (
     <View style={styles.cardsAllContainer}>
@@ -134,6 +142,15 @@ export const ViewCards = ({ route, navigation }) => {
           </View>
         ))}
       </ScrollView>
+      <View style={{ padding: 12 }}>
+        <Button
+          title={'Add card'}
+          style={{ padding: 8 }}
+          onPress={() => {
+            navigation.navigate('Create Card', { topic: topic.name });
+          }}
+        />
+      </View>
     </View>
   );
 };

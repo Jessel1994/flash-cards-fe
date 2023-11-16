@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { UserContext } from '../contexts/Theme';
 import { getUsers } from '../api';
-import { useNavigation } from '@react-navigation/native';
 
 export default function Profile({ navigation }) {
   const { user, setUser } = useContext(UserContext);
