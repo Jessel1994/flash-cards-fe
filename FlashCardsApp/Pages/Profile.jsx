@@ -2,10 +2,12 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { UserContext } from '../contexts/Theme';
 import { getUsers } from '../api';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Profile({ navigation }) {
-  const { user, setUser, setIsLoggedIn } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [currentUser, setCurrentUser] = useState({ username: '' });
+
   useEffect(() => {
     async function fetchUsers() {
       const userResult = await getUsers();
@@ -19,11 +21,10 @@ export default function Profile({ navigation }) {
     }
     fetchUsers();
   }, []);
-
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
-    setIsLoggedIn(false);
-    navigation.navigate('Main');
+
+    navigation.navigate('Home');
   };
 
   return (
@@ -39,11 +40,23 @@ export default function Profile({ navigation }) {
 
       <Text>{currentUser.username}</Text>
 
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          {
+            logout(), navigation.navigate('Home');
+          }
+        }}
+      >
         <Text style={styles.buttonText}>Upload Avatar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button} onPress={logout}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          logout();
+        }}
+      >
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </View>

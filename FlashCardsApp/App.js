@@ -17,6 +17,7 @@ import Login from './components/Login';
 import Card from './components/FlipCard';
 import Topics from './Pages/Topics';
 import Welcome from './components/Welcome';
+import Profile from './Pages/Profile';
 
 export default function App() {
   const { user } = useContext(UserContext);
@@ -130,6 +131,7 @@ function MainTabs() {
       />
 
       <Tab.Screen name="Add Card" component={PostFlashCard} />
+      <Tab.Screen name="Profile1" component={Profile} />
 
       <Tab.Screen
         name="Profile"
