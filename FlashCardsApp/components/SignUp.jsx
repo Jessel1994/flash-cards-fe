@@ -102,15 +102,14 @@ const SignUpForm = ({ navigation }) => {
       />
     </View>
 
-      <Button
-        title={isSigningUp ? "Signing Up..." : "Sign Up"}
-        onPress={handleSignUp}
-        style={styles.signUpButton}
-        disabled={isSigningUp}
-      />
-      {error && <Text>{error}</Text>}
+      <TouchableOpacity style={styles.button} onPress={handleSignUp} disabled={isSigningUp}>
+        <Text style={styles.buttonText}>{isSigningUp ? "Signing Up..." : "Sign Up"}</Text>
+      </TouchableOpacity>
+
+      {error && <Text style={styles.errorText}>{error}</Text>}
       {passwordError && <Text style={styles.errorText}>{passwordError}</Text>}
       {emailError && <Text style={styles.errorText}>{emailError}</Text>}
+
   
       <TouchableOpacity onPress={navigateToLogin}>
         <Text style={styles.loginText}>Login if already registered</Text>
@@ -122,36 +121,51 @@ const SignUpForm = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 343,
-    padding: 16,
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 12,
+    flex: 1, // Take up the full height
+    justifyContent: 'center', // Center content vertically
+    alignItems: 'center', // Center content horizontally
+    padding: 20, // Padding around the screen
+    backgroundColor: '#fff', // White background
   },
   inputContainer: {
     width: '100%',
+    marginBottom: 15, // Space between input fields
   },
   input: {
     width: '100%',
-    height: 40,
+    height: 50, // Height of the input field
     borderWidth: 1,
-    borderColor: 'gray',
-    paddingHorizontal: 10,
+    borderColor: '#ddd', // Lighter border color
+    borderRadius: 25, // Rounded corners
+    paddingHorizontal: 15, // Padding inside the input field
+    fontSize: 16, // Font size
+    backgroundColor: '#f7f7f7', // Light gray background color for input
   },
-  signUpButton: {
-    borderRadius: 100,
-    backgroundColor: 'green',
-    color: 'green',
+  button: { // Styles for the sign up button
+    width: '100%',
+    height: 50, // Match the input field height
+    backgroundColor: '#34C759', // Green color for the button
+    justifyContent: 'center', // Center the label vertically
+    alignItems: 'center', // Center the label horizontally
+    borderRadius: 25, // Rounded corners
+    marginTop: 10, // Space from the last input field
+  },
+  buttonText: { // Styles for the text inside the button
+    color: '#fff', // White color text
+    fontSize: 18, // Font size
+    fontWeight: 'bold', // Bold text
   },
   errorText: {
-    color: 'red',
-    marginTop: 5,
+    color: 'red', // Error messages in red
+    marginBottom: 10, // Space between error message and input field
   },
   loginText: {
-    textDecorationLine: 'underline',
-    color: 'blue',
-    marginTop: 8,
+    textDecorationLine: 'none', // No underline
+    color: '#000', // Black color text
+    marginTop: 20, // Space from the button
+    fontSize: 16, // Font size
   },
 });
+
 
 export default SignUpForm;
