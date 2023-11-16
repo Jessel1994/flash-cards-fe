@@ -1,16 +1,24 @@
 import FlipCard from 'react-native-flip-card';
-import { View, Text, StyleSheet, Pressable,TouchableOpacity, Button } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { getSingleCard, updateCardIsCorrect } from '../api';
 
 const Card = () => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
+
   const route = useRoute();
-  const { card_id, handleNext, index, handleBack } = route.params;
+  const { card_id, handleNext, index, handleBack, setIsCorrect } = route.params;
   const [isLoading, setIsLoading] = useState(true);
   const [singleCard, setSingleCard] = useState({});
+  const [cardAssessed, setCardAssessed] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -24,23 +32,42 @@ const Card = () => {
   }, [card_id]);
 
   const handleCorrectPress = async () => {
+    setSingleCard((currentCard) => ({ ...currentCard, isCorrect: true }));
+    setIsCorrect(true);
+    setCardAssessed(true);
     try {
-      const updatedCard = await updateCardIsCorrect(
+      await updateCardIsCorrect(
         card_id,
         singleCard.answer,
         singleCard.topic,
         true
       );
-      setIsCorrect(true);
-      // console.log('Card marked as correct:', updatedCard);
     } catch (error) {
-      // console.error('Error marking card as correct:', error);
+      setSingleCard((currentCard) => ({ ...currentCard, isCorrect: false }));
+      setIsCorrect(false);
+      setCardAssessed(false);
+      console.error('Error updating card:', error);
     }
   };
 
-  const handleIncorrectPress = () => {
+  const handleIncorrectPress = async () => {
+    setSingleCard((currentCard) => ({ ...currentCard, isCorrect: false }));
     setIsCorrect(false);
-    // console.log("Card marked as incorrect");
+    setCardAssessed(true);
+    try {
+      await updateCardIsCorrect(
+        card_id,
+        singleCard.answer,
+        singleCard.topic,
+        false
+      );
+    } catch (error) {
+      // setSingleCard((currentCard) => ({
+      //   ...currentCard,
+      //   isCorrect: true,
+      // }));
+      console.error('Error updating card:', error);
+    }
   };
 
   if (isLoading) {
@@ -108,13 +135,18 @@ const Card = () => {
           </FlipCard>
 
           <View style={styles.navigationButtons}>
-    <TouchableOpacity style={styles.backButton} disabled={index === 0? true: false} onPress={() => handleBack(index)}>
-      <Text style={styles.buttonText}>BACK</Text>
-    </TouchableOpacity>
-          <TouchableOpacity style={styles.nextButton} onPress={() => handleNext(index)}>
-      <       Text style={styles.buttonText}>NEXT</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles.backButton}
+              disabled={index === 0 ? true : false}
+              onPress={() => handleBack(index)}>
+              <Text style={styles.buttonText}>BACK</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.nextButton}
+              onPress={() => handleNext(index)}>
+              <Text style={styles.buttonText}>NEXT</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
         <Text style={styles.pageUpdates}>loading...</Text>
@@ -127,10 +159,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
   card: {
-    minWidth: "400px" , // You may need to adjust this to a fixed size or use flex
+    minWidth: '400px', // You may need to adjust this to a fixed size or use flex
     minHeight: '250px', // Adjust the height accordingly
     justifyContent: 'center',
     alignItems: 'center',
@@ -140,8 +171,8 @@ const styles = StyleSheet.create({
     elevation: 5, // for Android
     shadowColor: '#000', // for iOS
     shadowOffset: { width: 0, height: 2 }, // for iOS
-    shadowOpacity: 0.25, 
-    shadowRadius: 3.84, 
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   navigationButtons: {
     flexDirection: 'row', // Arrange buttons in a row
@@ -175,22 +206,17 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    alignSelf: 'center'
-    
+    alignSelf: 'center',
   },
   face: {
     justifyContent: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
   },
   cardSide: {
-    flex: 1, 
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  }
-
+  },
 });
-
-
-
 
 export default Card;
