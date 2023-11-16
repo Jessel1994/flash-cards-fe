@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View, ScrollView, Text, StyleSheet,
   TouchableOpacity, Button, TouchableHighlight,
@@ -17,9 +18,27 @@ export const ViewCards = ({ route, navigation }) => {
   const [error, setError] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deletingCard, setDeletingCard] = useState(null);
-  const [resetting, setResetting] = useState(false);//?
+  const [resetting, setResetting] = useState(false);
+  // const [cardAssessed, setCardAssessed] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
 
-  
+  // useFocusEffect(() => {
+  //   setIsLoading(true)
+  //   async function fetchCards() {
+  //     await getCards(user.username, topic.name)
+  //       .then((cards) => {
+  //         setIsLoading(false);
+  //         setCards(cards);
+  //       })
+  //       .catch((error) => {
+  //         // console.log(error);
+  //         setError(error);
+  //       });
+  //   }
+  //   fetchCards();
+  // }
+  // )
+
   useEffect(() => {
     setIsLoading(true);
     async function fetchCards() {
@@ -34,9 +53,9 @@ export const ViewCards = ({ route, navigation }) => {
         });
     }
     fetchCards();
-  }, [topic]);
+  }, [topic, resetting, isCorrect]);
 
-  // console.log(cards);
+  console.log(cards);
 
   const handleBack = (index) => {
     const card_id = cards[index - 1]._id;
@@ -58,6 +77,7 @@ export const ViewCards = ({ route, navigation }) => {
       handleNext: handleNext,
       index: index,
       handleBack: handleBack,
+      setIsCorrect: setIsCorrect,
     });
   };
 
@@ -81,13 +101,16 @@ export const ViewCards = ({ route, navigation }) => {
 
 // RESETTING CARDS
   const handleReset = async () => {
-    setResetting(true)
+    // setResetting(true)
     try{
-      setCards((prevCards) => prevCards.map((card) => ({ ...card, isCorrect: false })));
+      
       await resetAllCardsIsCorrect(user.username, topic)
+      // setCards((prevCards) => prevCards.map((card) => ({ ...card, isCorrect: -1 })));
+
       const updatedCards = await getCards(user.username, topic); 
-      setCards(updatedCards);   
-      setResetting(false); 
+      // setCards(updatedCards);   
+      setResetting((value) => !value); 
+      // setCardAssessed(false)
     } catch (error) {
       console.error('Error resetting cards:', error);
         setError(error)
@@ -150,8 +173,9 @@ export const ViewCards = ({ route, navigation }) => {
               />
             </View>
             {/* style to distinguish for correct or incorrect answer*/}
-            {card.isCorrect !== undefined && (
-              <Text style={{ color: card.isCorrect ? 'green' : 'red' }}>
+
+            {(card.isCorrect === -1) ? null : (
+              <Text style={{ color: card.isCorrect ? 'green' : 'coral', }}>
                 {card.isCorrect ? 'Correct' : 'Incorrect'}
               </Text>
             )}

@@ -6,11 +6,12 @@ import { getSingleCard, updateCardIsCorrect } from '../api';
 
 const Card = () => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
+  
   const route = useRoute();
-  const { card_id, handleNext, index, handleBack } = route.params;
+  const { card_id, handleNext, index, handleBack, setIsCorrect } = route.params;
   const [isLoading, setIsLoading] = useState(true);
   const [singleCard, setSingleCard] = useState({});
+  const [cardAssessed, setCardAssessed] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -24,25 +25,27 @@ const Card = () => {
   }, [card_id]);
 
   const handleCorrectPress = async () => {
-    setIsCorrect(true);
     setSingleCard((currentCard) => ({...currentCard, isCorrect: true}));
+    setIsCorrect(true);
+    setCardAssessed(true);
     try {
       await updateCardIsCorrect(card_id, 
         singleCard.answer,
         singleCard.topic,
         true );
-    } catch (error) {
-      setSingleCard((currentCard) => ({
-        ...currentCard,
-        isCorrect: false,
-      }));
+    
+      } catch (error) {
+        setSingleCard((currentCard) => ({ ...currentCard, isCorrect: false }));
+        setIsCorrect(false);
+        setCardAssessed(false);
       console.error('Error updating card:', error);
     }
   };
 
   const handleIncorrectPress = async ()  => {
+    setSingleCard((currentCard) => ({...currentCard, isCorrect: false}));
    setIsCorrect(false);
-   setSingleCard((currentCard) => ({...currentCard, isCorrect:false}));
+   setCardAssessed(true);
    try {
    await updateCardIsCorrect(
      card_id,
@@ -50,11 +53,12 @@ const Card = () => {
      singleCard.topic,
      false
    );
+
   } catch (error) {
-    setSingleCard((currentCard) => ({
-      ...currentCard,
-      isCorrect: true,
-    }));
+    // setSingleCard((currentCard) => ({
+    //   ...currentCard,
+    //   isCorrect: true,
+    // }));
     console.error('Error updating card:', error);
   }
 }
