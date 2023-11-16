@@ -12,7 +12,6 @@ export default function AddTopic({ setUpdate }) {
     slug: '',
     username: '',
   });
-  console.log(user);
 
   const onChangeHandler = (text, id) => {
     setForm((val) => {
