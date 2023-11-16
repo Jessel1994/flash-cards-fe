@@ -1,43 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
 import {
-  View, ScrollView, Text, StyleSheet,
-  TouchableOpacity, Button, TouchableHighlight,
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+  TouchableHighlight,
 } from 'react-native';
 import { getCards, deleteCard, resetAllCardsIsCorrect } from '../api';
 import { UserContext } from '../contexts/Theme';
 
 export const ViewCards = ({ route, navigation }) => {
-  console.log('Route Params:', route.params);
   const { user } = useContext(UserContext);
   const { topic } = route.params || {};
-  // console.log(route, navigation);
-
   const [isLoading, setIsLoading] = useState(true);
   const [cards, setCards] = useState([]);
   const [error, setError] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deletingCard, setDeletingCard] = useState(null);
   const [resetting, setResetting] = useState(false);
-  // const [cardAssessed, setCardAssessed] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-
-  // useFocusEffect(() => {
-  //   setIsLoading(true)
-  //   async function fetchCards() {
-  //     await getCards(user.username, topic.name)
-  //       .then((cards) => {
-  //         setIsLoading(false);
-  //         setCards(cards);
-  //       })
-  //       .catch((error) => {
-  //         // console.log(error);
-  //         setError(error);
-  //       });
-  //   }
-  //   fetchCards();
-  // }
-  // )
 
   useEffect(() => {
     setIsLoading(true);
@@ -48,14 +31,11 @@ export const ViewCards = ({ route, navigation }) => {
           setCards(cards);
         })
         .catch((error) => {
-          // console.log(error);
           setError(error);
         });
     }
     fetchCards();
   }, [topic, resetting, isCorrect]);
-
-  console.log(cards);
 
   const handleBack = (index) => {
     const card_id = cards[index - 1]._id;
@@ -65,13 +45,10 @@ export const ViewCards = ({ route, navigation }) => {
 
   const handleNext = (index) => {
     const card_id = cards[index + 1]._id;
-
-    console.log(cards[index + 1]);
     openSingle(card_id, index + 1);
   };
 
   const openSingle = (card_id, index) => {
-    console.log("we're here");
     navigation.navigate('Card', {
       card_id: card_id,
       handleNext: handleNext,
@@ -99,25 +76,21 @@ export const ViewCards = ({ route, navigation }) => {
       });
   };
 
-// RESETTING CARDS
+  // RESETTING CARDS
   const handleReset = async () => {
-    // setResetting(true)
-    try{
-      
-      await resetAllCardsIsCorrect(user.username, topic)
+    try {
+      await resetAllCardsIsCorrect(user.username, topic);
       // setCards((prevCards) => prevCards.map((card) => ({ ...card, isCorrect: -1 })));
-
-      const updatedCards = await getCards(user.username, topic); 
-      // setCards(updatedCards);   
-      setResetting((value) => !value); 
+      const updatedCards = await getCards(user.username, topic);
+      // setCards(updatedCards);
+      setResetting((value) => !value);
       // setCardAssessed(false)
     } catch (error) {
       console.error('Error resetting cards:', error);
-        setError(error)
-        setResetting(false); 
-      }
-    };
-  
+      setError(error);
+      setResetting(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -130,9 +103,16 @@ export const ViewCards = ({ route, navigation }) => {
   if (error) {
     return (
       <View>
-        <Text style={styles.pageUpdates}>
-          No Results Found
-        </Text>
+        <Text style={styles.pageUpdates}>No Results Found</Text>
+        <View style={{ padding: 12 }}>
+          <Button
+            title={'Add card'}
+            style={{ padding: 8 }}
+            onPress={() => {
+              navigation.navigate('Create Card', { topic: topic.name });
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -140,17 +120,23 @@ export const ViewCards = ({ route, navigation }) => {
   if (cards.length === 0) {
     return (
       <View>
-        <Text style={styles.pageUpdates}>
-          No Cards Found on this Topic
-        </Text>
+        <Text style={styles.pageUpdates}>No Cards Found on this Topic</Text>
+        <View style={{ padding: 12 }}>
+          <Button
+            title={'Add card'}
+            style={{ padding: 8 }}
+            onPress={() => {
+              navigation.navigate('Create Card', { topic: topic.name });
+            }}
+          />
+        </View>
       </View>
     );
   }
-  // console.log('Rendered Cards:', cards[0].author); // Log the cards being rendered#
 
   return (
     <View style={styles.cardsAllContainer}>
-     <TouchableHighlight onPress={() => handleReset()}>
+      <TouchableHighlight onPress={() => handleReset()}>
         <View style={styles.resetter}>
           <Text>Touch Here to Reset</Text>
         </View>
@@ -174,14 +160,23 @@ export const ViewCards = ({ route, navigation }) => {
             </View>
             {/* style to distinguish for correct or incorrect answer*/}
 
-            {(card.isCorrect === -1) ? null : (
-              <Text style={{ color: card.isCorrect ? 'green' : 'coral', }}>
+            {card.isCorrect === -1 ? null : (
+              <Text style={{ color: card.isCorrect ? 'green' : 'coral' }}>
                 {card.isCorrect ? 'Correct' : 'Incorrect'}
               </Text>
             )}
           </View>
         ))}
       </ScrollView>
+      <View style={{ padding: 12 }}>
+        <Button
+          title={'Add card'}
+          style={{ padding: 8 }}
+          onPress={() => {
+            navigation.navigate('Create Card', { topic: topic.name });
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -194,7 +189,7 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   resetter: {
-    margin: "auto",
+    margin: 'auto',
     height: 40,
     backgroundColor: 'lightgreen',
     paddingHorizontal: 10,
@@ -202,7 +197,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 8,
-
   },
   cardListItem: {
     borderWidth: 1,

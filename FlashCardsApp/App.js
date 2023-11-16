@@ -17,6 +17,7 @@ import Login from './components/Login';
 import Card from './components/FlipCard';
 import Topics from './Pages/Topics';
 import Welcome from './components/Welcome';
+import Profile from './Pages/Profile';
 
 export default function App() {
   const { user } = useContext(UserContext);
@@ -24,7 +25,7 @@ export default function App() {
   return (
     <UserProvider>
       <NavigationContainer>
-        {user ? <MainTabs /> : <AuthStack />}
+        <AuthStack />
       </NavigationContainer>
     </UserProvider>
   );
@@ -75,6 +76,8 @@ function AuthStack() {
       <Stack.Screen name='Home' component={HomeScreen} />
       <Stack.Screen name='SignUp' component={SignUpForm} />
       <Stack.Screen name='Login' component={Login} />
+      <Stack.Screen name='Create Card' component={PostFlashCard} />
+
       <Stack.Screen
         name='Welcome'
         options={{ headerShown: false }}
@@ -103,17 +106,6 @@ function MainTabs() {
           ),
         }}
       />
-
-      {/* <Tab.Screen
-        name='View Cards'
-        component={CardsStackNavigator}
-        options={{
-          tabBarLabel: 'View Cards',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='cards' size={24} color='black' />
-          ),
-        }}
-      /> */}
       <Tab.Screen
         name='Study'
         component={CardsStackNavigator}
@@ -125,16 +117,28 @@ function MainTabs() {
           ),
         }}
       />
-
-      <Tab.Screen name='Add Card' component={PostFlashCard} />
-
+      <Tab.Screen
+        name='Create Cards'
+        component={PostFlashCard}
+        options={{
+          headerShown: false,
+          tabBarLabel: 'Create Cards',
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name='light-bulb' size={size} color={color} />
+          ),
+        }}
+      />
       <Tab.Screen
         name='Profile'
-        component={CardsStackNavigator}
+        component={Profile}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='profile' size={24} color='black' />
+            <MaterialCommunityIcons
+              name='face-man-profile'
+              size={size}
+              color={color}
+            />
           ),
         }}
       />

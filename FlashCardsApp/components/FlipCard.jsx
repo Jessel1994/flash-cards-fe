@@ -129,7 +129,7 @@ const Card = () => {
 
           <View>
             <Button
-              isActive={index === 0 ? false : true}
+              disabled={index === 0 ? true : false}
               title='back'
               position='absolute'
               left='10'
