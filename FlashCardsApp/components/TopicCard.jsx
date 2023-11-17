@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
+    boxshadowColor: '#000',
+    boxshadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
+    boxshadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
   },

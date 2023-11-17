@@ -161,18 +161,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    minWidth: '400px', // You may need to adjust this to a fixed size or use flex
-    minHeight: '250px', // Adjust the height accordingly
+    minWidth: 200, // You may need to adjust this to a fixed size or use flex
+    minHeight: 300, // Adjust the height accordingly
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff', // If the card is white
     borderRadius: 10, // Rounded corners
     // Add shadows if needed to lift the card from the background
     elevation: 5, // for Android
-    shadowColor: '#000', // for iOS
-    shadowOffset: { width: 0, height: 2 }, // for iOS
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    boxshadowColor: '#000', // for iOS
+    boxshadowOffset: { width: 0, height: 2 }, // for iOS
+    boxshadowOpacity: 0.25,
+    boxshadowRadius: 3.84,
   },
   navigationButtons: {
     flexDirection: 'row', // Arrange buttons in a row
