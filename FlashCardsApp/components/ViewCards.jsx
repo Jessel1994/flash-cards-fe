@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 16,
     margin: 8,
-    width: 400,
+    width: 350,
     height: 150,
   },
   deleteButton: {
@@ -219,6 +219,6 @@ const styles = StyleSheet.create({
     marginTop: '50px',
     textAlign: 'center',
     padding: '16px',
-    fontSize: '32px',
+    // fontSize: '32px',
   },
 });

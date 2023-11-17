@@ -67,42 +67,69 @@ const Login = ({ navigation }) => {
       </View>
       {loginError && <Text>{loginError}</Text>}
       
-      <Button title="Log In" onPress={() => {handleLogIn(user)}} style={styles.signUpButton} />
+      <TouchableOpacity style={styles.button} onPress={handleLogIn}>
+        <Text style={styles.buttonText}>Log In</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={navigateToSignUp}>
         <Text style={styles.signupText}>Haven't got an account? Sign Up</Text>
       </TouchableOpacity>
+      {loginError && <Text style={styles.errorText}>{loginError}</Text>}
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: 343,
-    padding: 16,
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 12,
+    flex: 1, // Make sure the container takes the full screen height
+    justifyContent: 'center', // Center the content vertically
+    alignItems: 'center', // Center the content horizontally
+    padding: 20, // Add some padding around the screen
+    backgroundColor: '#fff', // Assuming the background is white
   },
   inputContainer: {
     width: '100%',
+    marginBottom: 20, // Add some margin at the bottom of each input container
   },
   input: {
     width: '100%',
-    height: 40,
+    height: 50, // Increase the height for a bigger touch area
     borderWidth: 1,
-    borderColor: 'gray',
-    paddingHorizontal: 10,
+    borderColor: '#ddd', // A lighter border color
+    borderRadius: 25, // Round the corners
+    paddingHorizontal: 15, // Horizontal padding within the input
+    fontSize: 16, // Increase the font size
+    backgroundColor: '#f7f7f7', // A light gray background color for the input field
+  },
+  button: { // This style is for the login button
+    width: '100%',
+    height: 50, // Match the height of the text inputs
+    backgroundColor: '#34C759', // The green color from the image
+    justifyContent: 'center', // Center the text inside the button
+    alignItems: 'center', // Center the text horizontally
+    borderRadius: 25, // Round the corners
+    marginTop: 10, // Add some margin at the top
+  },
+  buttonText: { // This style is for the text inside the button
+    color: '#fff', // White text color
+    fontSize: 18, // Increase the font size
+    fontWeight: 'bold', // Make the text bold
   },
   signUpButton: {
-    borderRadius: 100,
-    backgroundColor: 'green',
-    color: 'green',
+    // Removed as we're going to style the Button component directly
   },
   signupText: {
-    textDecorationLine: 'underline',
-    color: 'blue',
-    marginTop: 8,
+    textDecorationLine: 'none', // Remove the underline as it's not present in the image
+    color: '#000', // Black color for the text
+    marginTop: 20, // Add more space before the sign-up prompt
+    fontSize: 16, // Match the font size with inputs
+  },
+  errorText: {
+    color: 'red', // Assuming the error text should be red
+    marginBottom: 20, // Space between error text and input fields
   },
 });
+
 
 export default Login;

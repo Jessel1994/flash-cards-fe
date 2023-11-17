@@ -1,12 +1,19 @@
 import FlipCard from 'react-native-flip-card';
-import { View, Text, StyleSheet, Pressable, Button } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { getSingleCard, updateCardIsCorrect } from '../api';
 
 const Card = () => {
   const [isFlipped, setIsFlipped] = useState(false);
-  
+
   const route = useRoute();
   const { card_id, handleNext, index, handleBack, setIsCorrect } = route.params;
   const [isLoading, setIsLoading] = useState(true);
@@ -25,43 +32,43 @@ const Card = () => {
   }, [card_id]);
 
   const handleCorrectPress = async () => {
-    setSingleCard((currentCard) => ({...currentCard, isCorrect: true}));
+    setSingleCard((currentCard) => ({ ...currentCard, isCorrect: true }));
     setIsCorrect(true);
     setCardAssessed(true);
     try {
-      await updateCardIsCorrect(card_id, 
+      await updateCardIsCorrect(
+        card_id,
         singleCard.answer,
         singleCard.topic,
-        true );
-    
-      } catch (error) {
-        setSingleCard((currentCard) => ({ ...currentCard, isCorrect: false }));
-        setIsCorrect(false);
-        setCardAssessed(false);
+        true
+      );
+    } catch (error) {
+      setSingleCard((currentCard) => ({ ...currentCard, isCorrect: false }));
+      setIsCorrect(false);
+      setCardAssessed(false);
       console.error('Error updating card:', error);
     }
   };
 
-  const handleIncorrectPress = async ()  => {
-    setSingleCard((currentCard) => ({...currentCard, isCorrect: false}));
-   setIsCorrect(false);
-   setCardAssessed(true);
-   try {
-   await updateCardIsCorrect(
-     card_id,
-     singleCard.answer,
-     singleCard.topic,
-     false
-   );
-
-  } catch (error) {
-    // setSingleCard((currentCard) => ({
-    //   ...currentCard,
-    //   isCorrect: true,
-    // }));
-    console.error('Error updating card:', error);
-  }
-}
+  const handleIncorrectPress = async () => {
+    setSingleCard((currentCard) => ({ ...currentCard, isCorrect: false }));
+    setIsCorrect(false);
+    setCardAssessed(true);
+    try {
+      await updateCardIsCorrect(
+        card_id,
+        singleCard.answer,
+        singleCard.topic,
+        false
+      );
+    } catch (error) {
+      // setSingleCard((currentCard) => ({
+      //   ...currentCard,
+      //   isCorrect: true,
+      // }));
+      console.error('Error updating card:', error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -127,20 +134,18 @@ const Card = () => {
             </View>
           </FlipCard>
 
-          <View>
-            <Button
+          <View style={styles.navigationButtons}>
+            <TouchableOpacity
+              style={styles.backButton}
               disabled={index === 0 ? true : false}
-              title='back'
-              position='absolute'
-              left='10'
-              onPress={() => handleBack(index)}
-            />
-            <Button
-              title='Next'
-              position='absolute'
-              right='10'
-              onPress={() => handleNext(index)}
-            />
+              onPress={() => handleBack(index)}>
+              <Text style={styles.buttonText}>BACK</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.nextButton}
+              onPress={() => handleNext(index)}>
+              <Text style={styles.buttonText}>NEXT</Text>
+            </TouchableOpacity>
           </View>
         </View>
       ) : (
@@ -149,72 +154,68 @@ const Card = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '75%',
-    height: '300px',
     justifyContent: 'center',
     alignItems: 'center',
   },
   card: {
-    width: '70%',
-    height: '200px',
-    marginTop: '30px',
-    // alignItems: 'center',
-    margin: 'auto',
+    minWidth: 200, // You may need to adjust this to a fixed size or use flex
+    minHeight: 300, // Adjust the height accordingly
     justifyContent: 'center',
-    borderRadius: 20,
-  },
-  cardSide: {
-    width: '400px',
-    height: '50%',
-    backgroundColor: 'lightblue',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
+    backgroundColor: '#fff', // If the card is white
+    borderRadius: 10, // Rounded corners
+    // Add shadows if needed to lift the card from the background
+    elevation: 5, // for Android
+    boxshadowColor: '#000', // for iOS
+    boxshadowOffset: { width: 0, height: 2 }, // for iOS
+    boxshadowOpacity: 0.25,
+    boxshadowRadius: 3.84,
   },
-  face: {
-    width: '90%',
+  navigationButtons: {
+    flexDirection: 'row', // Arrange buttons in a row
+    justifyContent: 'space-between', // Space out the 'Back' and 'Next' buttons
+    alignItems: 'center', // Center buttons vertically
+    width: '100%', // Ensure the container takes full width of the card
+    marginTop: 20, // Space from the card or bottom of the screen
   },
-  back: {
-    width: '90%',
+  backButton: {
+    backgroundColor: '#007AFF', // Blue color for the button
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25, // Rounded corners for buttons
+    minWidth: 100, // Minimum width for the 'Back' button
+    alignItems: 'center', // Center text horizontally
+  },
+  nextButton: {
+    backgroundColor: '#007AFF', // Blue color for the button
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25, // Rounded corners for buttons
+    minWidth: 100, // Minimum width for the 'Next' button
+    alignItems: 'center', // Center text horizontally
+  },
+  buttonText: {
+    color: '#fff', // White color for the button text
+    fontSize: 16, // Font size for the button text
+    fontWeight: 'bold', // Bold font weight for the button text
   },
   cardtext: {
-    padding: '16px',
-    fontSize: '16px',
-  },
-  correctBtn: {
-    backgroundColor: '#228b22',
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 4,
-    minWidth: '48%',
+    alignContent: 'center',
+    justifyContent: 'center',
     textAlign: 'center',
+    alignSelf: 'center',
   },
-  incorrectBtn: {
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 4,
-    minWidth: '48%',
-    backgroundColor: '#ff7f50', //'coral',
-    textAlign: 'center',
+  face: {
+    justifyContent: 'center',
+    alignContent: 'center',
   },
-  buttonsContainer: {
-    marginTop: '50px',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    position: 'absolute',
-    bottom: '16px',
-  },
-  buttonText: {},
-  pageUpdates: {
-    backgroundColor: 'skyblue',
-    marginTop: '50px',
-    textAlign: 'center',
-    padding: '16px',
-    fontSize: '32px',
+  cardSide: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

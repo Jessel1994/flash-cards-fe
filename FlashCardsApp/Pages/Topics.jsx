@@ -31,12 +31,11 @@ export default function Topics({ navigation }) {
   };
 
   return (
-    <View>
+    <View style={{ paddingTop: 30 }}>
       <Text
         style={{
           margin: 18,
           fontWeight: 600,
-          fontSize: 20,
         }}>
         Choose a topic to start learning!
       </Text>

@@ -103,9 +103,6 @@ export const PostFlashCard = ({ navigation, route }) => {
         style={styles.saveButton}
         accessibilityLabel='Press to save your flashcard'
       />
-      <View>
-        <FontAwesomeIcon icon='fa-solid fa-house' />
-      </View>
     </View>
   );
 };

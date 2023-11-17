@@ -129,7 +129,11 @@ function MainTabs() {
           headerShown: false,
           tabBarLabel: 'Create Cards',
           tabBarIcon: ({ color, size }) => (
-            <Entypo name='light-bulb' size={size} color={color} />
+            <MaterialCommunityIcons
+              name='cards-outline'
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
