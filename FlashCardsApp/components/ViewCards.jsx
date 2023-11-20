@@ -21,6 +21,7 @@ export const ViewCards = ({ route, navigation }) => {
   const [deletingCard, setDeletingCard] = useState(null);
   const [resetting, setResetting] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -35,7 +36,7 @@ export const ViewCards = ({ route, navigation }) => {
         });
     }
     fetchCards();
-  }, [topic, resetting, isCorrect]);
+  }, [topic, resetting, isCorrect, update]);
 
   const handleBack = (index) => {
     const card_id = cards[index - 1]._id;
@@ -54,6 +55,7 @@ export const ViewCards = ({ route, navigation }) => {
       index: index,
       handleBack: handleBack,
       setIsCorrect: setIsCorrect,
+      setUpdate: setUpdate,
     });
   };
 
@@ -69,9 +71,9 @@ export const ViewCards = ({ route, navigation }) => {
         setDeletingCard(null);
       })
       .catch((error) => {
-        setCards((currCards) => [...currCards]);
-        setIsDeleting(false);
-        setDeletingCard(null);
+        // setCards((currCards) => [...currCards]);
+        // setIsDeleting(false);
+        // setDeletingCard(null);
       });
   };
 
@@ -80,7 +82,7 @@ export const ViewCards = ({ route, navigation }) => {
     try {
       await resetAllCardsIsCorrect(user.username, topic);
       // setCards((prevCards) => prevCards.map((card) => ({ ...card, isCorrect: -1 })));
-      const updatedCards = await getCards(user.username, topic);
+      // const updatedCards = await getCards(user.username, topic);
       // setCards(updatedCards);
       setResetting((value) => !value);
       // setCardAssessed(false)

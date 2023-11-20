@@ -18,6 +18,7 @@ import Card from './components/FlipCard';
 import Topics from './Pages/Topics';
 import Welcome from './components/Welcome';
 import Profile from './Pages/Profile';
+import HomeScreen from './Pages/HomeScreen';
 
 export default function App() {
   const { user } = useContext(UserContext);
@@ -28,32 +29,6 @@ export default function App() {
         <AuthStack />
       </NavigationContainer>
     </UserProvider>
-  );
-}
-
-function HomeScreen({ navigation }) {
-  return (
-    <View style={styles.container}>
-      <Text>Welcome to the Flash Cards App!</Text>
-      <Text>Here you can make yourself flashcards and revise!</Text>
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.7}
-        onPress={() => {
-          navigation.navigate('SignUp');
-        }}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.7}
-        onPress={() => {
-          navigation.navigate('Login');
-        }}>
-        <Text style={styles.buttonText}>Log In</Text>
-      </TouchableOpacity>
-      <StatusBar style='auto' />
-    </View>
   );
 }
 

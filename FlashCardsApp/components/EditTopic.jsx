@@ -33,7 +33,7 @@ export default function EditTopic({ topic, setModalVisible, setUpdate }) {
 
   const deleteHandler = async function () {
     try {
-      await deleteTopic(topic.slug);
+      await deleteTopic(topic);
       setModalVisible(false);
       setUpdate((val) => !val);
     } catch {
