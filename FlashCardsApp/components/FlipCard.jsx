@@ -1,4 +1,4 @@
-import FlipCard from 'react-native-flip-card';
+import FlipCard from "react-native-flip-card";
 import {
   View,
   Text,
@@ -6,10 +6,12 @@ import {
   Pressable,
   TouchableOpacity,
   Button,
-} from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { useRoute } from '@react-navigation/native';
-import { getSingleCard, updateCardIsCorrect } from '../api';
+} from "react-native";
+import React, { useState, useEffect } from "react";
+import { useRoute } from "@react-navigation/native";
+import { getSingleCard, updateCardIsCorrect } from "../api";
+import Previous from "../img/arrow-button";
+import Next from "../img/next-button";
 
 const Card = () => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -46,7 +48,7 @@ const Card = () => {
       setSingleCard((currentCard) => ({ ...currentCard, isCorrect: false }));
       setIsCorrect(false);
       setCardAssessed(false);
-      console.error('Error updating card:', error);
+      console.error("Error updating card:", error);
     }
   };
 
@@ -66,7 +68,7 @@ const Card = () => {
       //   ...currentCard,
       //   isCorrect: true,
       // }));
-      console.error('Error updating card:', error);
+      console.error("Error updating card:", error);
     }
   };
 
@@ -90,61 +92,66 @@ const Card = () => {
             flipVertical={false}
             clickable={true}
             alignHeight={true}
-            style={styles.card}>
+            style={styles.card}
+          >
             {/* Front Side */}
             <View style={[styles.face, styles.cardSide]}>
-              <Text style={styles.cardtext}>
+              <Text style={styles.titleText}>Question</Text>{" "}
+              {/* Add title for the question side */}
+              <Text style={styles.cardText}>
                 {isFlipped ? singleCard.answer : singleCard.question}
               </Text>
             </View>
             {/* Back Side */}
-
             <View style={[styles.back, styles.cardSide]}>
-              <Text style={styles.cardtext}>
+              <Text style={styles.titleText}>Answer</Text>{" "}
+              {/* Add title for the answer side */}
+              <Text style={styles.cardText}>
                 {isFlipped ? singleCard.question : singleCard.answer}
               </Text>
-
               {/* Correct / Incorrect Buttons */}
-
-              <View style={styles.buttonsContainer}>
+              <View style={styles.bottomButtonsContainer}>
                 <Pressable
-                  onPress={() => {
-                    handleCorrectPress();
-                  }}
+                  onPress={handleCorrectPress}
                   style={({ pressed }) => [
                     styles.correctBtn,
                     {
-                      backgroundColor: pressed ? 'darkgreen' : '#228b22',
+                      backgroundColor: pressed ? "#1c7a1c" : "#228b22", // darkgreen when pressed
                     },
-                  ]}>
-                  <Text style={styles.buttonText}>Correct Answer</Text>
+                  ]}
+                >
+                  <Text style={styles.buttonText}>Correct</Text>
                 </Pressable>
-
                 <Pressable
-                  onPress={() => {
-                    handleIncorrectPress();
-                  }}
+                  onPress={handleIncorrectPress}
                   style={({ pressed }) => [
                     styles.incorrectBtn,
-                    { backgroundColor: pressed ? 'darkred' : '#ff7f50' },
-                  ]}>
-                  <Text style={styles.buttonText}>Incorrect Answer</Text>
+                    {
+                      backgroundColor: pressed ? "#cc5c54" : "#ff7f50", // darkred when pressed
+                    },
+                  ]}
+                >
+                  <Text style={styles.buttonText}>Incorrect</Text>
                 </Pressable>
               </View>
             </View>
           </FlipCard>
-
           <View style={styles.navigationButtons}>
             <TouchableOpacity
               style={styles.backButton}
-              disabled={index === 0 ? true : false}
-              onPress={() => handleBack(index)}>
-              <Text style={styles.buttonText}>BACK</Text>
+              disabled={index === 0}
+              onPress={() => handleBack(index)}
+            >
+              <Previous />
+
+              <Text style={styles.buttonText}>Previous Card</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.nextButton}
-              onPress={() => handleNext(index)}>
-              <Text style={styles.buttonText}>NEXT</Text>
+              onPress={() => handleNext(index)}
+            >
+              <Next />
+              <Text style={styles.buttonText}>Next Card</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -157,65 +164,108 @@ const Card = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   card: {
-    minWidth: 200, // You may need to adjust this to a fixed size or use flex
-    minHeight: 300, // Adjust the height accordingly
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff', // If the card is white
-    borderRadius: 10, // Rounded corners
-    // Add shadows if needed to lift the card from the background
-    elevation: 5, // for Android
-    boxshadowColor: '#000', // for iOS
-    boxshadowOffset: { width: 0, height: 2 }, // for iOS
-    boxshadowOpacity: 0.25,
-    boxshadowRadius: 3.84,
+    minWidth: 260, // Adjusted to match desired width
+    minHeight: 400, // Adjusted to match desired height
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff", // Assuming a white background
+    borderRadius: 20, // More rounded corners
+    elevation: 10, // Increased for Android to give a floating effect
+    shadowColor: "#000", // Corrected property name for iOS
+    shadowOffset: { width: 0, height: 4 }, // Adjusted for more depth
+    shadowOpacity: 0.3, // Slightly increased opacity for shadow
+    shadowRadius: 5, // Smoothed shadow edges
   },
   navigationButtons: {
-    flexDirection: 'row', // Arrange buttons in a row
-    justifyContent: 'space-between', // Space out the 'Back' and 'Next' buttons
-    alignItems: 'center', // Center buttons vertically
-    width: '100%', // Ensure the container takes full width of the card
-    marginTop: 20, // Space from the card or bottom of the screen
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginTop: 20,
+    color: '#000'
   },
   backButton: {
-    backgroundColor: '#007AFF', // Blue color for the button
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 25, // Rounded corners for buttons
-    minWidth: 100, // Minimum width for the 'Back' button
-    alignItems: 'center', // Center text horizontally
+    borderRadius: 30, // More rounded buttons
+    minWidth: 120, // Adjusted width
+    alignItems: "center",
   },
   nextButton: {
-    backgroundColor: '#007AFF', // Blue color for the button
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 25, // Rounded corners for buttons
-    minWidth: 100, // Minimum width for the 'Next' button
-    alignItems: 'center', // Center text horizontally
+    borderRadius: 30, // More rounded buttons
+    minWidth: 120, // Adjusted width
+    alignItems: "center",
+    color: "black",
   },
-  buttonText: {
-    color: '#fff', // White color for the button text
-    fontSize: 16, // Font size for the button text
-    fontWeight: 'bold', // Bold font weight for the button text
-  },
-  cardtext: {
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    alignSelf: 'center',
+  cardText: {
+    fontSize: 22, // Larger text for readability
+    fontWeight: "bold", // Bold for emphasis
+    textAlign: "center",
+    marginHorizontal: 20, // Added horizontal margin
   },
   face: {
-    justifyContent: 'center',
-    alignContent: 'center',
+    justifyContent: "center",
+    alignItems: "center", // Fixed alignContent to alignItems for consistency
   },
   cardSide: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    alignSelf: "stretch",
+    padding: 20,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around", // Space out the buttons evenly
+    alignItems: "center",
+    marginTop: 20,
+  },
+  titleText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  correctBtn: {
+    paddingVertical: 10, // Increased padding for a larger button
+    paddingHorizontal: 28, // Increased padding for a wider button
+    borderRadius: 25, // Rounded edges
+    backgroundColor: "#228b22", // Default green color
+
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    marginBottom: 20,
+  },
+  bottomButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+  },
+  incorrectBtn: {
+    paddingVertical: 10, // Same as the correct button
+    paddingHorizontal: 28, // Same as the correct button
+    borderRadius: 25, // Rounded edges
+    backgroundColor: "#ff7f50", // Default red color
+    // Add shadow if desired
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: "#000",
+    fontSize: 14, // Adjust as needed
+    fontWeight: "bold", // Bold text
   },
 });
 
